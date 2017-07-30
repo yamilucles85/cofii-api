@@ -1,8 +1,4 @@
 {
-  "db": {
-    "name": "db",
-    "connector": "memory"
-  },
   "cofidb": {
     "url": "mongodb://strk9:coffii@ds127963.mlab.com:27963/coffii",
     "name": "cofidb",

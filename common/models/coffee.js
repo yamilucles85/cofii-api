@@ -2,7 +2,7 @@
 
 module.exports = function (Coffee) {
     Coffee.search = function (image, cb) {
-        Coffee.find({
+        Coffee.findOne({
         }, function (err, docs) {
             return cb(null, docs);
         });
