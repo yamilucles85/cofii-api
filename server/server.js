@@ -153,8 +153,10 @@ boot(app, __dirname, function(err) {
     var c = providersConfig[s];
     switch (c.provider) {
       case 'facebook':
-        c.clientID = facebookKeys.clientID;
-        c.clientSecret = facebookKeys.clientSecret;
+        // c.clientID = facebookKeys.clientID;
+        // c.clientSecret = facebookKeys.clientSecret;
+        c.clientID = 12345;
+        c.clientSecret = 12345;
         break;
       default:
         break;
