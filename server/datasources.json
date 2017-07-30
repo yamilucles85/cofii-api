@@ -4,7 +4,7 @@
     "connector": "memory"
   },
   "cofidb": {
-    "url": "mongodb://admin@localhost:27017/cofidb",
+    "url": "mongodb://strk9:coffii@ds127963.mlab.com:27963/coffii",
     "name": "cofidb",
     "connector": "mongodb"
   }
