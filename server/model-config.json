@@ -1,0 +1,73 @@
+{
+  "_meta": {
+    "sources": [
+       "./node_modules/loopback-component-passport/lib/models",
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "User": {
+    "dataSource": "cofidb",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "cofidb",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "cofidb",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "cofidb",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "cofidb",
+    "public": false
+  },
+ 
+  "UserCredential": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "UserIdentity": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "coffee": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "taste": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "toast": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "variety": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "rating": {
+    "dataSource": "cofidb",
+    "public": true
+  },
+  "account": {
+    "dataSource": "cofidb",
+    "public": true
+  }
+}

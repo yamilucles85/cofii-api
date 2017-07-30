@@ -1,0 +1,48 @@
+{
+  "name": "coffee",
+  "plural": "coffees",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "brand": {
+      "type": "string",
+      "required": true
+    },
+    "high": {
+      "type": "number",
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "variety": {
+      "type": "belongsTo",
+      "model": "variety",
+      "foreignKey": ""
+    },
+    "taste": {
+      "type": "belongsTo",
+      "model": "taste",
+      "foreignKey": ""
+    },
+    "toast": {
+      "type": "belongsTo",
+      "model": "toast",
+      "foreignKey": ""
+    },
+    "ratings": {
+      "type": "hasMany",
+      "model": "rating",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

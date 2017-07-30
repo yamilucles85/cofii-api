@@ -1,0 +1,24 @@
+{
+  "name": "taste",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "coffees": {
+      "type": "hasMany",
+      "model": "coffee",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

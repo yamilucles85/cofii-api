@@ -1,0 +1,11 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "cofidb": {
+    "url": "mongodb://admin@localhost:27017/cofidb",
+    "name": "cofidb",
+    "connector": "mongodb"
+  }
+}

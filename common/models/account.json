@@ -1,0 +1,19 @@
+{
+  "name": "account",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "ratings": {
+      "type": "hasMany",
+      "model": "rating",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
