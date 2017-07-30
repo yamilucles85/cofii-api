@@ -1,8 +1,10 @@
 'use strict';
 
+const Clarifai = require('clarifai')
+
 // instantiate a new Clarifai app passing in your api key.
 const clarifai = new Clarifai.App({
- apiKey: proccess.env.CLARIFAI_KEY || ''
+ apiKey: process.env.CLARIFAI_KEY || 'ec64fde9fdd04242aece41cb196215c8'
 });
 
 
