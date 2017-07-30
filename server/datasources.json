@@ -1,7 +1,9 @@
 {
-  "cofidb": {
-    "url": "mongodb://strk9:coffii@ds127963.mlab.com:27963/coffii",
-    "name": "cofidb",
-    "connector": "mongodb"
+  "db": {
+    "name": "db",
+    "connector": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "cofi-demo"
   }
 }

@@ -15,59 +15,59 @@
     ]
   },
   "User": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": false
   },
   "AccessToken": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": false
   },
   "ACL": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": false,
     "options": {
       "strictObjectIDCoercion": true
     }
   },
   "Role": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": false
   },
  
   "UserCredential": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "UserIdentity": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "coffee": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "taste": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "toast": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "variety": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "rating": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   },
   "account": {
-    "dataSource": "cofidb",
+    "dataSource": "db",
     "public": true
   }
 }

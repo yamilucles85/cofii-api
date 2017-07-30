@@ -5,7 +5,7 @@ var uriObject = URI ? mongodbUri.parse(URI) : null;
 var config = {};
 
 if (uriObject && uriObject.hosts.length >= 1) {
-  config.cofidb = {
+  config.db = {
     name: 'db',
     connector: 'mongodb',
     host: uriObject.hosts[0].host,
