@@ -13,6 +13,7 @@
   "dependencies": {
     "compression": "^1.0.3",
     "cookie-parser": "^1.4.3",
+    "connect-ensure-login": "^0.1.1",
     "cors": "^2.5.2",
     "express-flash": "0.0.2",
     "express-session": "^1.15.4",
@@ -20,7 +21,10 @@
     "loopback": "^3.0.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^4.0.0",
+    "loopback-component-passport": "^3.4.0",
     "loopback-connector-mongodb": "^1.18.1",
+    "passport-facebook": "^2.1.1",
+    "passport-local": "^1.0.0",
     "serve-favicon": "^2.0.1",
     "strong-error-handler": "^2.0.0"
   },
