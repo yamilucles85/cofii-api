@@ -11,30 +11,30 @@ const clarifai = new Clarifai.App({
 module.exports = function (Coffee) {
     Coffee.search = function (image, cb) {
         // predict the contents of an image by passing in a url
-        clarifai.models.predict('Coffee', {
+        clarifai.models.predict('coffee', {
             base64: image
         }).then(response => {
-            var outputs = response.outputs && response.outputs.length >= 1 && response.outputs;
+            var outputs = response.outputs && response.outputs;
             var data = outputs && outputs[0] && outputs[0].data;
             var concepts = data && data.concepts.length >= 1 && data.concepts;
-            
-            if(concepts && concepts.length >= 1 && concepts[0].value >= 0.6){
+            var firstConcept = concepts[0];
+            if(firstConcept){
                 Coffee.findOne({
-                    where: {
-                        brand: concepts[0].name
-                    }
+                    brand: firstConcept.name
                 }, function (err, docs) {
-                    cb(null, docs);
+                    cb(err, docs);
                 });
             }else{
                 cb(null, null)
             }
+        }).catch(err => {
+            console.error(err);
         })
     };
 
     Coffee.remoteMethod("search", {
         description: "Searching coffee based on an image",
         accepts: { arg: "image", type: "string" },
-        returns: { arg: "result", type: "any", root: true}
+        returns: { arg: "result", type: "object", root: true}
     });
 };
