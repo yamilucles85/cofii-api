@@ -24,6 +24,7 @@
     "loopback-component-explorer": "^4.0.0",
     "loopback-component-passport": "^3.4.0",
     "loopback-connector-mongodb": "^1.18.1",
+    "mongodb-uri": "^0.9.7",
     "node-tesseract": "^0.2.7",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
