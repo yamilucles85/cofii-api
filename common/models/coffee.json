@@ -11,6 +11,10 @@
       "type": "string",
       "required": true
     },
+    "rating": {
+      "type": "number",
+      "required": true
+    },
     "high": {
       "type": "number",
       "required": true
