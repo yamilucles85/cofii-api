@@ -1,8 +1,10 @@
 {
   "db": {
-    "host": "localhost",
-    "port": 27017,
-    "database": "cofi-demo",
+    "host": "ds127963.mlab.com",
+    "port": 27963,
+    "user":"strk9",
+    "password":"coffii",
+    "database": "coffii",
     "name": "db",
     "connector": "mongodb"
   }

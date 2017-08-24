@@ -29,7 +29,9 @@ module.exports = (Coffee) => {
                     return cb(null, null);
                 }
 
-                return cb(null, hits[0].input.data.metadata);
+                const metadata = hits[0].input.data.metadata;
+
+                Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
             })
             .catch((err) => {
                 winston.error("search coffee", err);
