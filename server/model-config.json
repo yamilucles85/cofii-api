@@ -1,7 +1,7 @@
 {
   "_meta": {
     "sources": [
-       "./node_modules/loopback-component-passport/lib/models",
+      "./node_modules/loopback-component-passport/lib/models",
       "loopback/common/models",
       "loopback/server/models",
       "../common/models",
@@ -37,7 +37,6 @@
     "dataSource": "db",
     "public": false
   },
- 
   "UserCredential": {
     "dataSource": "db",
     "public": true
@@ -67,6 +66,10 @@
     "public": true
   },
   "account": {
+    "dataSource": "db",
+    "public": true
+  },
+  "brand": {
     "dataSource": "db",
     "public": true
   }

@@ -7,43 +7,37 @@
     "validateUpsert": true
   },
   "properties": {
-    "brand": {
-      "type": "string",
-      "required": true
-    },
-    "rating": {
+    "avg_rating": {
       "type": "number",
       "required": true
     },
-    "high": {
+    "altitude": {
       "type": "number",
       "required": true
     },
     "price": {
       "type": "number",
       "required": true
+    },
+    "roast": {
+      "type": "number",
+      "required": false
+    },
+    "catching_score": {
+      "type": "number",
+      "required": false
     }
   },
   "validations": [],
   "relations": {
-    "variety": {
-      "type": "belongsTo",
+    "varieties": {
+      "type": "hasOne",
       "model": "variety",
       "foreignKey": ""
     },
-    "taste": {
+    "brand": {
       "type": "belongsTo",
-      "model": "taste",
-      "foreignKey": ""
-    },
-    "toast": {
-      "type": "belongsTo",
-      "model": "toast",
-      "foreignKey": ""
-    },
-    "ratings": {
-      "type": "hasMany",
-      "model": "rating",
+      "model": "brand",
       "foreignKey": ""
     }
   },

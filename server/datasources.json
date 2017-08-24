@@ -1,9 +1,9 @@
 {
   "db": {
-    "name": "db",
-    "connector": "mongodb",
     "host": "localhost",
     "port": 27017,
-    "database": "cofi-demo"
+    "database": "cofi-demo",
+    "name": "db",
+    "connector": "mongodb"
   }
 }
