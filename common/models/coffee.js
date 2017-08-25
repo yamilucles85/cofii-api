@@ -14,7 +14,7 @@ module.exports = (Coffee) => {
      */
     Coffee.search = (image, cb) => {
 
-        const query = { input: { bytes: new Buffer(image, "base64") } };
+        const query = { input: { base64: image } };
 
         clarifai.inputs.search(query, { page: 1, perPage: 1 })
             .then((response) => {
@@ -30,7 +30,7 @@ module.exports = (Coffee) => {
                 }
 
                 const metadata = hits[0].input.data.metadata;
-
+                console.log(metadata);
                 Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
             })
             .catch((err) => {
