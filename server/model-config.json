@@ -53,15 +53,7 @@
     "dataSource": "db",
     "public": true
   },
-  "toast": {
-    "dataSource": "db",
-    "public": true
-  },
   "variety": {
-    "dataSource": "db",
-    "public": true
-  },
-  "rating": {
     "dataSource": "db",
     "public": true
   },
@@ -70,6 +62,10 @@
     "public": true
   },
   "brand": {
+    "dataSource": "db",
+    "public": true
+  },
+  "review": {
     "dataSource": "db",
     "public": true
   }

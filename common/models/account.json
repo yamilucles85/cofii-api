@@ -8,11 +8,6 @@
   "properties": {},
   "validations": [],
   "relations": {
-    "ratings": {
-      "type": "hasMany",
-      "model": "rating",
-      "foreignKey": ""
-    }
   },
   "acls": [],
   "methods": {}
