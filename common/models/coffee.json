@@ -17,7 +17,7 @@
     },
     "price": {
       "type": "number",
-      "required": true
+      "required": false
     },
     "roast": {
       "type": "number",

@@ -33,6 +33,11 @@
       "type": "belongsTo",
       "model": "Coffee",
       "foreignKey": "coffeeId"
+    },
+    "method": {
+      "type": "hasOne",
+      "model": "PreparationMethod",
+      "foreignKey": "methodId"
     }
   },
   "acls": [],

@@ -59,6 +59,12 @@ module.exports = (Coffee) => {
         var filter = {
             coffeeId: id,
             userId: currentUserId,
+            methodId: null
+        }
+
+        if(data.methodId){
+            filter.methodId = data.methodId;
+            data.methodId = new ObjectID(data.methodId);
         }
 
         Review.findOne(filter)
@@ -69,6 +75,7 @@ module.exports = (Coffee) => {
                 review = new Review({
                     coffeeId: new ObjectID(id),
                     userId: currentUserId,
+                    methodId: null
                 });
             }
 

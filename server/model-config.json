@@ -72,5 +72,9 @@
   "Review": {
     "dataSource": "db",
     "public": false
+  },
+  "PreparationMethod": {
+    "dataSource": "db",
+    "public": true
   }
 }
