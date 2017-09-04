@@ -29,6 +29,9 @@
     }
   },
   "validations": [],
+  "scope": {
+    "include": ["brand", "variety"]
+  },
   "relations": {
     "variety": {
       "type": "hasOne",
