@@ -1,9 +1,7 @@
 {
   "_meta": {
     "sources": [
-      "./node_modules/loopback-component-passport/lib/models",
-      "loopback/common/models",
-      "loopback/server/models",
+      "loopback/models",
       "../common/models",
       "./models"
     ],
@@ -13,14 +11,6 @@
       "../common/mixins",
       "./mixins"
     ]
-  },
-  "User": {
-    "dataSource": "db",
-    "public": false
-  },
-  "AccessToken": {
-    "dataSource": "db",
-    "public": false
   },
   "ACL": {
     "dataSource": "db",
@@ -37,36 +27,36 @@
     "dataSource": "db",
     "public": false
   },
-  "UserCredential": {
+  "Coffee": {
     "dataSource": "db",
     "public": true
   },
-  "UserIdentity": {
+  "Variety": {
     "dataSource": "db",
     "public": true
   },
-  "coffee": {
+  "Brand": {
     "dataSource": "db",
     "public": true
   },
-  "taste": {
+  "Review": {
     "dataSource": "db",
     "public": true
   },
-  "variety": {
+  "CoffiiUser": {
     "dataSource": "db",
     "public": true
   },
-  "account": {
+  "CoffiiUserIdentity": {
     "dataSource": "db",
-    "public": true
+    "public": false
   },
-  "brand": {
+  "CoffiiUserCredential": {
     "dataSource": "db",
-    "public": true
+    "public": false
   },
-  "review": {
+  "AccessToken": {
     "dataSource": "db",
-    "public": true
+    "public": false
   }
 }

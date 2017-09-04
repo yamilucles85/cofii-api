@@ -24,16 +24,16 @@ var passportConfigurator = new PassportConfigurator(app);
 var flash = require('express-flash');
 app.use(flash());
 
-app.get('/auth/error', function(req, res) {
+app.get('/auth/error', function (req, res) {
   var flash = req.flash('error').length >= 1 && req.flash('error')[0];
   var error = flash || 'unknow error';
-  res.status(403).json({success: false, error: error});
+  res.status(403).json({ success: false, error: error });
 });
 
 // attempt to build the providers/passport config
 var facebookKeys = {
-  clientID: process.env.FACEBOOCK_CLIENT_ID,
-  clientSecret: process.env.FACEBOOCK_CLIENT_SECRET,
+  clientID: process.env.FACEBOOCK_CLIENT_ID || "113119379370031",
+  clientSecret: process.env.FACEBOOCK_CLIENT_SECRET || "c08e8da9f58f8b776d8754af579bbbe6",
 };
 
 var providersConfig = {};
@@ -45,7 +45,7 @@ try {
   process.exit(1); // fatal
 }
 
-var generateKey = function(hmacKey, algorithm, encoding) {
+var generateKey = function (hmacKey, algorithm, encoding) {
   //assert(hmacKey, g.f('{{HMAC}} key is required'));
   algorithm = algorithm || 'sha1';
   encoding = encoding || 'hex';
@@ -54,14 +54,14 @@ var generateKey = function(hmacKey, algorithm, encoding) {
   hmac.update(buf);
   var key = hmac.digest(encoding);
   return key;
-};
+}
 
-var profileToUser = function(provider, profile, options) {
+var profileToUser = function (provider, profile, options) {
   // Let's create a user for that
   var profileEmail = profile.emails && profile.emails[0] &&
-              profile.emails[0].value;
+    profile.emails[0].value;
   var generatedEmail = (profile.username || profile.id) + '@' +
-              (profile.provider || provider) + '.itstimebro.com';
+    (profile.provider || provider) + '.coffii.co';
   var email = provider === 'ldap' ? profileEmail : generatedEmail;
   var username = provider + '.' + (profile.username || profile.id);
   var password = generateKey('password');
@@ -79,9 +79,9 @@ var profileToUser = function(provider, profile, options) {
   return userObj;
 };
 
-app.start = function() {
+app.start = function () {
   // start the web server
-  return app.listen(function() {
+  return app.listen(function () {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
@@ -98,7 +98,8 @@ app.use(function setCurrentUser(req, res, next) {
   if (!req.accessToken) {
     return next();
   }
-  app.models.AppUser.findById(req.accessToken.userId, function(err, user) {
+
+  app.models.CoffiiUser.findById(req.accessToken.coffiiUserId, function (err, user) {
     if (err) {
       return next(err);
     }
@@ -110,33 +111,35 @@ app.use(function setCurrentUser(req, res, next) {
   });
 });
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var token = req.accessToken;
   if (!token) {
     return next();
   }
+
   var now = new Date();
   if (now.getTime() - token.created.getTime() < 1000) {
     return next();
   }
+
   req.accessToken.created = now;
-  req.accessToken.ttl = 604800 * 10; //ten weeks
+  req.accessToken.ttl = 604800 * 10; // ten weeks
   req.accessToken.save(next);
 });
 
-app.all('/auth/*', function(req, res, next) {
+app.all('/auth/*', function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With');
   next();
 });
 
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
+boot(app, __dirname, function (err) {
   if (err) throw err;
 
   //require('./push-application')(app);
@@ -144,28 +147,26 @@ boot(app, __dirname, function(err) {
   passportConfigurator.init();
 
   passportConfigurator.setupModels({
-    userModel: app.models.AppUser,
-    userIdentityModel: app.models.AppUserIdentity,
-    userCredentialModel: app.models.AppUserCredential,
+    userModel: app.models.CoffiiUser,
+    userIdentityModel: app.models.CoffiiUserIdentity,
+    userCredentialModel: app.models.CoffiiUserCredential,
   });
 
-  for (var s in providersConfig) {
+  for (const s in providersConfig) {
     var c = providersConfig[s];
     switch (c.provider) {
       case 'facebook':
-        // c.clientID = facebookKeys.clientID;
-        // c.clientSecret = facebookKeys.clientSecret;
+        c.clientID = facebookKeys.clientID;
+        c.clientSecret = facebookKeys.clientSecret;
         break;
       default:
         break;
     }
     c.session = c.json ? false : c.session !== false;
-    c.profileToUser = function(provider, profile, options) {
+    c.profileToUser = function (provider, profile, options) {
       var userObj = profileToUser(provider, profile, options);
-      userObj.realm = c.userRealm;
       return userObj;
     };
-
     passportConfigurator.configureProvider(s, c);
   }
 
