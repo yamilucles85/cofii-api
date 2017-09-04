@@ -24,6 +24,15 @@
       "default": "$now"
     }
   },
+  "scope": {
+    "include": [
+      { 
+        "coffee": ["brand", "variety"] 
+      },
+      "method", 
+      "user"
+    ]
+  },
   "validations": [],
   "relations": {
     "user": {

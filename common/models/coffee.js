@@ -130,7 +130,12 @@ module.exports = (Coffee) => {
         filter.coffeeId = id;
         filter.userId = currentUserId;
 
-        Review.find({where: filter})
+        Review.find({
+            where: filter,
+            include: [
+                { coffee: ['brand', 'variety'] }, 'method'
+            ]
+        })
         .then(_reviews => {
             cb(null, _reviews);
         }).catch(err => {
