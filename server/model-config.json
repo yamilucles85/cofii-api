@@ -1,9 +1,7 @@
 {
   "_meta": {
     "sources": [
-      "./node_modules/loopback-component-passport/lib/models",
-      "loopback/common/models",
-      "loopback/server/models",
+      "loopback/models",
       "../common/models",
       "./models"
     ],
@@ -14,17 +12,32 @@
       "./mixins"
     ]
   },
-  "User": {
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "db",
+    "public": true
+  },
+  "AccountIdentity": {
+    "dataSource": "db",
+    "public": false
+  },
+  "AccountCredential": {
     "dataSource": "db",
     "public": false
   },
   "AccessToken": {
     "dataSource": "db",
-    "public": false
-  },
-  "ACL": {
-    "dataSource": "db",
-    "public": false
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "Account",
+        "foreignKey": "userId"
+      }
+    }
   },
   "RoleMapping": {
     "dataSource": "db",
@@ -37,31 +50,11 @@
     "dataSource": "db",
     "public": false
   },
-  "UserCredential": {
-    "dataSource": "db",
-    "public": true
-  },
-  "UserIdentity": {
-    "dataSource": "db",
-    "public": true
-  },
   "Coffee": {
     "dataSource": "db",
     "public": true
   },
-  "Taste": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Toast": {
-    "dataSource": "db",
-    "public": true
-  },
   "Variety": {
-    "dataSource": "db",
-    "public": true
-  },
-  "Account": {
     "dataSource": "db",
     "public": true
   },
@@ -71,7 +64,7 @@
   },
   "Review": {
     "dataSource": "db",
-    "public": false
+    "public": true
   },
   "PreparationMethod": {
     "dataSource": "db",

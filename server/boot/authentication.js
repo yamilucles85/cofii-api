@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-var loopback = require('loopback');
+const loopback = require("loopback");
 
 module.exports = function enableAuthentication(server) {
   // enable authentication
   server.enableAuth();
-  server.middleware('auth', loopback.token({
+  server.middleware("auth", loopback.token({
     model: server.models.accessToken,
-    currentUserLiteral: 'me',
+    currentUserLiteral: "me",
   }));
 };

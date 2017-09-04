@@ -21,7 +21,7 @@
     "coffees": {
       "type": "hasMany",
       "model": "Coffee",
-      "foreignKey": "brandId"
+      "foreignKey": "coffees"
     }
   },
   "acls": [],
