@@ -1,0 +1,40 @@
+{
+  "name": "Review",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "rating": {
+      "type": "number",
+      "required": true
+    },
+    "comment": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "date",
+      "default": "$now"
+    },
+    "createdAt": {
+      "type": "date",
+      "default": "$now"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "account",
+      "foreignKey": "userId"
+    },
+    "coffee": {
+      "type": "belongsTo",
+      "model": "Coffee",
+      "foreignKey": "coffeeId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

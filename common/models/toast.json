@@ -1,5 +1,5 @@
 {
-  "name": "toast",
+  "name": "Toast",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -15,8 +15,8 @@
   "relations": {
     "coffees": {
       "type": "hasMany",
-      "model": "coffee",
-      "foreignKey": ""
+      "model": "Coffee",
+      "foreignKey": "toastId"
     }
   },
   "acls": [],

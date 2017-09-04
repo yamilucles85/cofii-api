@@ -1,5 +1,6 @@
 {
-  "name": "taste",
+  "name": "Taste",
+  "plural": "tastes",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -15,8 +16,8 @@
   "relations": {
     "coffees": {
       "type": "hasMany",
-      "model": "coffee",
-      "foreignKey": ""
+      "model": "Coffee",
+      "foreignKey": "tasteId"
     }
   },
   "acls": [],

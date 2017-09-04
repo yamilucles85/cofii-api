@@ -1,5 +1,5 @@
 {
-  "name": "coffee",
+  "name": "Coffee",
   "plural": "coffees",
   "base": "PersistedModel",
   "idInjection": true,
@@ -30,15 +30,20 @@
   },
   "validations": [],
   "relations": {
-    "varieties": {
+    "variety": {
       "type": "hasOne",
-      "model": "variety",
-      "foreignKey": ""
+      "model": "Variety",
+      "foreignKey": "varietyId"
     },
     "brand": {
       "type": "belongsTo",
-      "model": "brand",
-      "foreignKey": ""
+      "model": "Brand",
+      "foreignKey": "brandId"
+    },
+    "reviews": {
+      "type": "hasMany",
+      "model": "Review",
+      "foreignKey": "coffeeId"
     }
   },
   "acls": [],

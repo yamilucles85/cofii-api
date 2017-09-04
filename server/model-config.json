@@ -45,32 +45,32 @@
     "dataSource": "db",
     "public": true
   },
-  "coffee": {
+  "Coffee": {
     "dataSource": "db",
     "public": true
   },
-  "taste": {
+  "Taste": {
     "dataSource": "db",
     "public": true
   },
-  "toast": {
+  "Toast": {
     "dataSource": "db",
     "public": true
   },
-  "variety": {
+  "Variety": {
     "dataSource": "db",
     "public": true
   },
-  "rating": {
+  "Account": {
     "dataSource": "db",
     "public": true
   },
-  "account": {
+  "Brand": {
     "dataSource": "db",
     "public": true
   },
-  "brand": {
+  "Review": {
     "dataSource": "db",
-    "public": true
+    "public": false
   }
 }

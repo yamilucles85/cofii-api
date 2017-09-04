@@ -144,17 +144,17 @@ boot(app, __dirname, function(err) {
   passportConfigurator.init();
 
   passportConfigurator.setupModels({
-    userModel: app.models.AppUser,
-    userIdentityModel: app.models.AppUserIdentity,
-    userCredentialModel: app.models.AppUserCredential,
+    userModel: app.models.Account,
+    userIdentityModel: app.models.Account,
+    userCredentialModel: app.models.Account,
   });
 
   for (var s in providersConfig) {
     var c = providersConfig[s];
     switch (c.provider) {
       case 'facebook':
-        // c.clientID = facebookKeys.clientID;
-        // c.clientSecret = facebookKeys.clientSecret;
+        c.clientID = facebookKeys.clientID;
+        c.clientSecret = facebookKeys.clientSecret;
         break;
       default:
         break;

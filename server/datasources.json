@@ -2,10 +2,10 @@
   "db": {
     "host": "ds127963.mlab.com",
     "port": 27963,
-    "user":"strk9",
-    "password":"coffii",
     "database": "coffii",
+    "password": "coffii",
     "name": "db",
+    "user": "strk9",
     "connector": "mongodb"
   }
 }

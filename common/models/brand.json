@@ -1,5 +1,6 @@
 {
-  "name": "brand",
+  "name": "Brand",
+  "plural": "brands",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -19,8 +20,8 @@
   "relations": {
     "coffees": {
       "type": "hasMany",
-      "model": "coffee",
-      "foreignKey": ""
+      "model": "Coffee",
+      "foreignKey": "brandId"
     }
   },
   "acls": [],

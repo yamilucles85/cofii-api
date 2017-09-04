@@ -1,5 +1,6 @@
 {
-  "name": "variety",
+  "name": "Variety",
+  "plural": "varieties",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -15,8 +16,8 @@
   "relations": {
     "coffees": {
       "type": "hasMany",
-      "model": "coffee",
-      "foreignKey": ""
+      "model": "Coffee",
+      "foreignKey": "varietyId"
     }
   },
   "acls": [],
