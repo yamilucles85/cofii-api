@@ -1,0 +1,34 @@
+{
+  "name": "CoffiiUser",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
+      "foreignKey": ""
+    },
+    "identities": {
+      "type": "hasMany",
+      "model": "CoffiiUserIdentity",
+      "foreignKey": ""
+    },
+    "credentials": {
+      "type": "hasMany",
+      "model": "CoffiiUserCredential",
+      "foreignKey": ""
+    },
+    "reviews": {
+      "type": "hasMany",
+      "model": "Review",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

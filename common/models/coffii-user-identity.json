@@ -1,0 +1,14 @@
+{
+  "name": "CoffiiUserIdentity",
+  "plural": "UserIdentities",
+  "base": "UserIdentity",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

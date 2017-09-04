@@ -1,6 +1,6 @@
 {
-  "name": "account",
-  "base": "User",
+  "name": "CoffiiAccessToken",
+  "base": "AccessToken",
   "idInjection": true,
   "options": {
     "validateUpsert": true
@@ -8,6 +8,11 @@
   "properties": {},
   "validations": [],
   "relations": {
+    "coffiiUser": {
+      "type": "belongsTo",
+      "model": "CoffiiUser",
+      "foreignKey": ""
+    }
   },
   "acls": [],
   "methods": {}
