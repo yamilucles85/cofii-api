@@ -111,7 +111,7 @@ module.exports = function(Account) {
     });
   };
 
-  AppUser.remoteMethod(
+  Account.remoteMethod(
     'avatar', {
       accepts: [
         {arg: 'id', type: 'string'},
