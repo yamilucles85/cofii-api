@@ -1,5 +1,6 @@
 {
   "name": "Review",
+  "plural": "reviews",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
