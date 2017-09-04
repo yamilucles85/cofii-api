@@ -111,4 +111,55 @@ module.exports = (Coffee) => {
           },
         }
       );
+
+      Coffee.myReviews = (id, filter, options, cb) => {
+        const Review = app.models.Review;
+
+        var token = options && options.accessToken;
+        var currentUserId = token && token.userId;
+
+        var filter = filter || {};
+
+        filter.coffeeId = id;
+        filter.userId = currentUserId;
+
+        Review.find({where: filter})
+        .then(_reviews => {
+            cb(null, _reviews);
+        }).catch(err => {
+            cb(err);
+        })
+    }
+
+    Coffee.remoteMethod(
+        'myReviews', {
+          accepts: [{
+            arg: 'id',
+            type: 'string',
+            required: true,
+          },
+          {
+            arg: 'filter',
+            type: 'object',
+            required: false,
+            http: {
+              source: 'query',
+            },
+          },
+          {
+            arg: 'options',
+            type: 'object',
+            http: 'optionsFromRequest',
+          }],
+          returns: {
+            arg: 'reviews',
+            type: 'object',
+            root: true,
+          },
+          http: {
+            path: '/:id/my-reviews',
+            verb: 'get',
+          },
+        }
+      );
 };
