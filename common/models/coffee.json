@@ -1,6 +1,5 @@
 {
-  "name": "coffee",
-  "plural": "coffees",
+  "name": "Coffee",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -32,12 +31,17 @@
   "relations": {
     "varieties": {
       "type": "hasOne",
-      "model": "variety",
+      "model": "Variety",
       "foreignKey": ""
     },
     "brand": {
       "type": "belongsTo",
-      "model": "brand",
+      "model": "Brand",
+      "foreignKey": ""
+    },
+    "reviews": {
+      "type": "hasMany",
+      "model": "Review",
       "foreignKey": ""
     }
   },
