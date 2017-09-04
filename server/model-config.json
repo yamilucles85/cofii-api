@@ -55,7 +55,7 @@
     "dataSource": "db",
     "public": false
   },
-  "AccessToken": {
+  "CoffiiAccessToken": {
     "dataSource": "db",
     "public": false
   }

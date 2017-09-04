@@ -10,7 +10,7 @@
   "relations": {
     "accessTokens": {
       "type": "hasMany",
-      "model": "AccessToken",
+      "model": "CoffiiAccessToken",
       "foreignKey": ""
     },
     "identities": {

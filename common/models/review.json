@@ -14,21 +14,26 @@
     "comment": {
       "type": "string"
     },
-    "date_created": {
+    "updatedAt": {
       "type": "date",
-      "required": true
+      "default": "$now"
     },
-    "date_updated": {
+    "createdAt": {
       "type": "date",
-      "required": true
+      "default": "$now"
     }
   },
   "validations": [],
   "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "account",
+      "foreignKey": "userId"
+    },
     "coffee": {
       "type": "belongsTo",
       "model": "Coffee",
-      "foreignKey": ""
+      "foreignKey": "coffeeId"
     }
   },
   "acls": [],

@@ -1,17 +1,12 @@
 {
-  "name": "Brand",
-  "plural": "brands",
+  "name": "Toast",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "name": {
-      "type": "string",
-      "required": true
-    },
-    "country": {
+    "description": {
       "type": "string",
       "required": true
     }
@@ -21,7 +16,7 @@
     "coffees": {
       "type": "hasMany",
       "model": "Coffee",
-      "foreignKey": "coffees"
+      "foreignKey": "toastId"
     }
   },
   "acls": [],

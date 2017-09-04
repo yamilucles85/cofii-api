@@ -1,6 +1,10 @@
+const app = require('../../server/server');
+
 const Clarifai = require("clarifai");
 
 const winston = require("winston");
+
+const ObjectID = require('mongodb').ObjectID;
 
 // instantiate a new Clarifai app passing in your api key.
 const clarifai = new Clarifai.App({
@@ -44,4 +48,67 @@ module.exports = (Coffee) => {
         accepts: { arg: "image", type: "string" },
         returns: { arg: "result", type: "object", root: true },
     });
+
+
+    Coffee.sendReview = (id, data, options, cb) => {
+        const Review = app.models.Review;
+
+        var token = options && options.accessToken;
+        var currentUserId = token && token.userId;
+
+        var filter = {
+            coffeeId: id,
+            userId: currentUserId,
+        }
+
+        Review.findOne(filter)
+        .then(_review => {
+            var review = _review;
+
+            if(!review){
+                review = new Review({
+                    coffeeId: new ObjectID(id),
+                    userId: currentUserId,
+                });
+            }
+
+            Object.assign(review, data || {});
+            review.rating = Math.max(Math.min((review.rating || 0), 5), 0);
+            review.save(cb);
+        }).catch(err => {
+            cb(err);
+        })
+    }
+
+    Coffee.remoteMethod(
+        'sendReview', {
+          accepts: [{
+            arg: 'id',
+            type: 'string',
+            required: true,
+          },
+          {
+            arg: 'review',
+            type: 'object',
+            required: true,
+            http: {
+              source: 'body',
+            },
+          },
+          {
+            arg: 'options',
+            type: 'object',
+            http: 'optionsFromRequest',
+          }],
+          returns: {
+            arg: 'review',
+            type: 'object',
+            root: true,
+          },
+          http: {
+            path: '/:id/send-review',
+            verb: 'post',
+          },
+        }
+      );
 };
