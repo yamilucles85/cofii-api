@@ -16,7 +16,8 @@ module.exports = function (Review) {
                     rating: { $avg: "$rating" },
                 },
             },
-        ], function (err, data) {
+        ], function (err, results) {
+            var data = results && results.length && results[0];
             if (err) {
                 next(err);
             } else {
