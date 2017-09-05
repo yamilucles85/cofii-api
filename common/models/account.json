@@ -8,6 +8,13 @@
   },
   "properties": {},
   "validations": [],
+  "relations": {
+    "reviews": {
+      "type": "hasMany",
+      "model": "Review",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "principalType": "ROLE",
