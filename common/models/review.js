@@ -9,7 +9,7 @@ module.exports = function (Review) {
         var collection = Review.getDataSource().connector.collection(Review.modelName);
         var coffee = Review.getDataSource().ObjectID(coffeeId);
         collection.aggregate([
-            { $match: { coffeId: coffee } },
+            { $match: { coffeeId: coffee } },
             {
                 $group: {
                     _id: coffee,
