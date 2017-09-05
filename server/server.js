@@ -99,7 +99,7 @@ app.use(function setCurrentUser(req, res, next) {
     return next();
   }
 
-  app.models.CoffiiUser.findById(req.accessToken.coffiiUserId, function (err, user) {
+  app.models.Account.findById(req.accessToken.userId, function (err, user) {
     if (err) {
       return next(err);
     }
