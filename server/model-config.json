@@ -69,5 +69,9 @@
   "PreparationMethod": {
     "dataSource": "db",
     "public": true
+  },
+  "Follow": {
+    "dataSource": "db",
+    "public": false
   }
 }

@@ -1,0 +1,33 @@
+{
+  "name": "Follow",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "createdAt": {
+      "type": "date",
+      "required": true
+    },
+    "accepted": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "follower": {
+      "type": "hasOne",
+      "model": "Account",
+      "foreignKey": "follower"
+    },
+    "following": {
+      "type": "hasOne",
+      "model": "Account",
+      "foreignKey": "following"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
