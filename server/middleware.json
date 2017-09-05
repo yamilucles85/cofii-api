@@ -45,6 +45,11 @@
     "loopback#urlNotFound": {}
   },
   "final:after": {
-    "strong-error-handler": {}
+    "./middleware/error-override": {},
+    "strong-error-handler": {
+      "params": {
+        "safeFields": ["code"]
+      }
+    }
   }
 }

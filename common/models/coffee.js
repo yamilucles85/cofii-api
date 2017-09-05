@@ -67,6 +67,10 @@ module.exports = (Coffee) => {
             data.methodId = new ObjectID(data.methodId);
         }
 
+        if(!currentUserId){
+            return cb(new Error('User not logged in'));
+        }
+
         Review.findOne(filter)
         .then(_review => {
             var review = _review;

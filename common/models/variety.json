@@ -13,13 +13,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "coffees": {
-      "type": "hasMany",
-      "model": "Coffee",
-      "foreignKey": "varietyId"
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }

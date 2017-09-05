@@ -13,6 +13,9 @@
     ]
   },
   "properties": {
+    "model": {
+      "type": "string"
+    },
     "avg_rating": {
       "type": "number",
       "required": true
@@ -37,7 +40,7 @@
   "validations": [],
   "relations": {
     "variety": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "Variety",
       "foreignKey": "varietyId"
     },
@@ -49,7 +52,7 @@
     "reviews": {
       "type": "hasMany",
       "model": "Review",
-      "foreignKey": "reviews"
+      "foreignKey": "coffeeId"
     }
   },
   "acls": [],
