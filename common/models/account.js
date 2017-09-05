@@ -127,7 +127,7 @@ module.exports = function (Account) {
                 path: "/:id/avatar",
                 verb: "get",
             },
-        },
+        }
     );
 
     /*   Account.registerDevice = function(data, options, cb) {

@@ -71,7 +71,7 @@ module.exports = (Coffee) => {
             return cb(new Error('User not logged in'));
         }
 
-        Review.findOne(filter)
+        Review.findOne({where: filter})
         .then(_review => {
             var review = _review;
 
