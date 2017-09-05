@@ -37,7 +37,7 @@ module.exports = (Coffee) => {
                 console.log(metadata);
                 //Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
                 
-                Coffee.findOne({where: {}}, (error, instance) => cb(null, instance));
+                Coffee.find({}, (error, results) => cb(null, results && result.length ? results[0] : null));
             })
             .catch((err) => {
                 winston.error("search coffee", err);
