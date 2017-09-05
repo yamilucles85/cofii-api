@@ -49,7 +49,7 @@
     "reviews": {
       "type": "hasMany",
       "model": "Review",
-      "foreignKey": "reviews"
+      "foreignKey": "coffeeId"
     }
   },
   "acls": [],
