@@ -6,7 +6,7 @@ module.exports = function (Review) {
     Review.observe('after save', function (ctx, next) {
         var Coffee = app.models.Coffee;
         var coffeeId = ctx.instance.coffeeId;
-        var collection = db.collection(Review.modelName);
+        var collection = Review.getDataSource().connector.collection(Review.modelName);
         var coffee = Review.getDataSource().ObjectID(coffeeId);
         collection.aggregate([
             { $match: { coffeId: coffee } },
