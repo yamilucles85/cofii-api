@@ -37,7 +37,7 @@
   },
   "relations": {
     "variety": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "Variety",
       "foreignKey": "varietyId"
     },
