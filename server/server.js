@@ -58,8 +58,7 @@ var generateKey = function (hmacKey, algorithm, encoding) {
 
 var profileToUser = function (provider, profile, options) {
   // Let's create a user for that
-  var profileEmail = profile.emails && profile.emails[0] &&
-    profile.emails[0].value;
+  var profileEmail = profile.emails && profile.emails[0] && profile.emails[0].value;
   var generatedEmail = (profile.username || profile.id) + '@' +
     (profile.provider || provider) + '.coffii.co';
   var email = provider === 'ldap' ? profileEmail : generatedEmail;
@@ -99,7 +98,7 @@ app.use(function setCurrentUser(req, res, next) {
     return next();
   }
 
-  app.models.CoffiiUser.findById(req.accessToken.coffiiUserId, function (err, user) {
+  app.models.Account.findById(req.accessToken.userId, function (err, user) {
     if (err) {
       return next(err);
     }
@@ -156,7 +155,7 @@ boot(app, __dirname, function (err) {
     var c = providersConfig[s];
     switch (c.provider) {
       case 'facebook':
-        if(facebookKeys.clientID && facebookKeys.clientSecret){
+        if (facebookKeys.clientID && facebookKeys.clientSecret) {
           c.clientID = facebookKeys.clientID;
           c.clientSecret = facebookKeys.clientSecret;
         }

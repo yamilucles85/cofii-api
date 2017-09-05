@@ -6,6 +6,12 @@
   "options": {
     "validateUpsert": true
   },
+  "scope": {
+    "include": [
+      "brand",
+      "variety"
+    ]
+  },
   "properties": {
     "avg_rating": {
       "type": "number",
@@ -29,9 +35,6 @@
     }
   },
   "validations": [],
-  "scope": {
-    "include": ["brand", "variety"]
-  },
   "relations": {
     "variety": {
       "type": "hasOne",

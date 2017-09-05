@@ -1,16 +1,16 @@
 {
-    "name": "AccountIdentity",
-    "plural": "user-identities",
-    "base": "UserIdentity",
-    "properties": {},
-    "validations": [],
-    "relations": {
-      "user": {
-        "type": "belongsTo",
-        "model": "Account",
-        "foreignKey": "userId"
-      }
-    },
-    "acls": [],
-    "methods": []
-  }
+  "name": "AccountIdentity",
+  "plural": "user-identities",
+  "base": "UserIdentity",
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "userId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

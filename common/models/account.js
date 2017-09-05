@@ -72,8 +72,8 @@ module.exports = function (Account) {
       }); */
 
     Account.avatar = function (id, req, res, cb) {
-        var redirect = !(req.query.json ? req.query.json == "true" : false);
-        var avatarSize = req.query.size || req.query.s || "small";
+        const redirect = !(req.query.json ? req.query.json === "true" : false);
+        const avatarSize = req.query.size || req.query.s || "small";
 
         if (avatarSize === "s") {
             avatarSize = "small";
@@ -127,7 +127,7 @@ module.exports = function (Account) {
                 path: "/:id/avatar",
                 verb: "get",
             },
-        }
+        },
     );
 
     /*   Account.registerDevice = function(data, options, cb) {
@@ -239,4 +239,31 @@ module.exports = function (Account) {
             },
         });
 
+    // Account.me = function (options, cb) {
+    //     const { accessToken } = options;
+    //     console.log(accessToken);
+    //     cb("ERROR");
+    // };
+
+    // Account.remoteMethod(
+    //     "me",
+    //     {
+    //         returns: {
+    //             arg: "user",
+    //             type: "object",
+    //             root: true,
+    //         },
+    //         http: {
+    //             path: "/me",
+    //             verb: "get",
+    //         },
+    //         accepts: [
+    //             {
+    //                 arg: "options",
+    //                 type: "object",
+    //                 http: "optionsFromRequest",
+    //             },
+    //         ],
+    //     },
+    // );
 };
