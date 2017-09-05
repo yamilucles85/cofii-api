@@ -7,6 +7,9 @@
     "validateUpsert": true
   },
   "properties": {
+    "model": {
+      "type": "string"
+    },
     "avg_rating": {
       "type": "number",
       "required": true
