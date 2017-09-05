@@ -11,7 +11,7 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
-    "clarifai": "^2.2.0",
+    "clarifai": "^2.3.2",
     "compression": "^1.0.3",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",

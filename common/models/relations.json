@@ -1,0 +1,22 @@
+{
+  "name": "relations",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "relationid": {
+      "type": "number",
+      "required": true
+    },
+    "relationuser": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,6 +1,6 @@
 {
-  "name": "account",
-  "base": "User",
+  "name": "Follow",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
@@ -8,15 +8,10 @@
   "properties": {},
   "validations": [],
   "relations": {
-    "ratings": {
+    "accounts": {
       "type": "hasMany",
-      "model": "rating",
+      "model": "account",
       "foreignKey": ""
-    },
-    "follower": {
-      "type": "hasMany",
-      "model": "Follow",
-      "foreignKey": "followerId"
     }
   },
   "acls": [],

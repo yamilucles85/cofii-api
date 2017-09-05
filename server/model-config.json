@@ -72,5 +72,13 @@
   "brand": {
     "dataSource": "db",
     "public": true
+  },
+  "relations": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Follow": {
+    "dataSource": null,
+    "public": false
   }
 }
