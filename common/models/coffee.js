@@ -35,10 +35,7 @@ module.exports = (Coffee) => {
 
                 const metadata = hits[0].input.data.metadata;
                 console.log(metadata);
-                console.log(hits);
-                //Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
-                
-                Coffee.find({}, (error, results) => cb(null, results && results.length ? results[0] : null));
+                Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
             })
             .catch((err) => {
                 winston.error("search coffee", err);
