@@ -229,6 +229,68 @@ module.exports = (Coffee) => {
         }
     );
 
+
+    Coffee.relatedCoffees = function (id, cb) {
+        Coffee.findById(id)
+        .then(_coffee => {
+            if (!_coffee){
+                return {};
+            }
+            return Promise.all([
+                Coffee.find({
+                    where: {
+                        id: {
+                            neq: _coffee.id
+                        },
+                        brandId: _coffee.brandId,
+                        model: _coffee.model
+                    }
+                }),
+                Coffee.find({
+                    where: {
+                        id: {
+                            neq: _coffee.id
+                        },
+                        brandId: _coffee.brandId,
+                        varietyId: _coffee.varietyId
+                    }
+                })
+            ]).then(
+                results => {
+                    return {
+                        varieties: results[0],
+                        models: results[1]
+                    }
+                }
+            );
+        })
+        .then(response => {
+            cb(null, response);
+        })
+        .catch(err => {
+            cb(err)
+        })
+    }
+
+    Coffee.remoteMethod(
+        'relatedCoffees', {
+            accepts: [{
+                arg: 'id',
+                type: 'string',
+                required: true,
+            }],
+            returns: {
+                arg: 'response',
+                type: 'object',
+                root: true,
+            },
+            http: {
+                path: '/:id/related-coffees',
+                verb: 'get',
+            },
+        }
+    );
+
     Coffee.prototype.train = function (cb) {
         var _self = this;
         if (!_self.trained) {
