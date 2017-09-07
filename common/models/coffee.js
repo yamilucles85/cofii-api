@@ -222,22 +222,33 @@ module.exports = (Coffee) => {
             if (!_self.image) {
                 return cb(new Error('Image not found for coffee id:' + _self.id.toString()))
             }
-            clarifai.inputs.create([{
-                "url": _self.image,
-                "metadata": {
-                    "id": _self.id,
-                    "brandId": _self.brandId,
-                    "varietyId": _self.varietyId,
+
+            var image = _self.image.base64 ? {
+                "base64": _self.image.base64
+            } : {
+                    "url": (_self.image.url || _self.image)
+                };
+
+            var input = {};
+
+            Object.assign(input, image, {
+                metadata: {
+                    "id": _self.id.toString(),
+                    "brandId": _self.brandId.toString(),
+                    "varietyId": _self.varietyId.toString(),
                     "model": _self.model || 'Original',
                 }
-            }]);
+            });
 
-            clarifai.inputs.create([input]).then(
+            clarifai.inputs.create(input).then(
                 (inputs) => {
                     _self.trained = true;
                     _self.save(cb);
                 },
-                (error) => { cb(error) }
+                (err) => {
+                    console.log(err);
+                    cb(new Error('Error while training'));
+                }
             );
         } else {
             cb(new Error('Coffee Already Trained'))
@@ -246,7 +257,7 @@ module.exports = (Coffee) => {
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
-        if (!coffee.trained && coffee.image) {
+        if (!coffee.trained && coffee.image && false) {
             coffee.train((err, _coffee) => {
                 next(err);
             });
