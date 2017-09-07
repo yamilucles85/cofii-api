@@ -18,7 +18,7 @@ module.exports = (Coffee) => {
     /**
      * Runs a query agains the photos of the Coffee bags and returns the top result
      */
-    
+
     Coffee.search = (image, cb) => {
 
         const query = { input: { base64: image } };
@@ -65,68 +65,68 @@ module.exports = (Coffee) => {
             methodId: null
         }
 
-        if(data.methodId){
+        if (data.methodId) {
             filter.methodId = data.methodId;
             data.methodId = new ObjectID(data.methodId);
         }
 
-        if(!currentUserId){
+        if (!currentUserId) {
             return cb(new Error('User not logged in'));
         }
 
-        Review.findOne({where: filter})
-        .then(_review => {
-            var review = _review;
+        Review.findOne({ where: filter })
+            .then(_review => {
+                var review = _review;
 
-            if(!review){
-                review = new Review({
-                    coffeeId: new ObjectID(id),
-                    userId: currentUserId,
-                    methodId: null
-                });
-            }
+                if (!review) {
+                    review = new Review({
+                        coffeeId: new ObjectID(id),
+                        userId: currentUserId,
+                        methodId: null
+                    });
+                }
 
-            Object.assign(review, data || {});
-            review.rating = Math.max(Math.min((review.rating || 0), 5), 0);
-            review.save(cb);
-        }).catch(err => {
-            cb(err);
-        })
+                Object.assign(review, data || {});
+                review.rating = Math.max(Math.min((review.rating || 0), 5), 0);
+                review.save(cb);
+            }).catch(err => {
+                cb(err);
+            })
     }
 
     Coffee.remoteMethod(
         'sendReview', {
-          accepts: [{
-            arg: 'id',
-            type: 'string',
-            required: true,
-          },
-          {
-            arg: 'review',
-            type: 'object',
-            required: true,
-            http: {
-              source: 'body',
+            accepts: [{
+                arg: 'id',
+                type: 'string',
+                required: true,
             },
-          },
-          {
-            arg: 'options',
-            type: 'object',
-            http: 'optionsFromRequest',
-          }],
-          returns: {
-            arg: 'review',
-            type: 'object',
-            root: true,
-          },
-          http: {
-            path: '/:id/send-review',
-            verb: 'post',
-          },
+            {
+                arg: 'review',
+                type: 'object',
+                required: true,
+                http: {
+                    source: 'body',
+                },
+            },
+            {
+                arg: 'options',
+                type: 'object',
+                http: 'optionsFromRequest',
+            }],
+            returns: {
+                arg: 'review',
+                type: 'object',
+                root: true,
+            },
+            http: {
+                path: '/:id/send-review',
+                verb: 'post',
+            },
         }
-      );
+    );
 
-      Coffee.myReviews = (id, filter, options, cb) => {
+    Coffee.myReviews = (id, filter, options, cb) => {
         const Review = app.models.Review;
 
         var token = options && options.accessToken;
@@ -143,100 +143,94 @@ module.exports = (Coffee) => {
                 { coffee: ['brand', 'variety'] }, 'method'
             ]
         })
-        .then(_reviews => {
-            cb(null, _reviews);
-        }).catch(err => {
-            cb(err);
-        })
+            .then(_reviews => {
+                cb(null, _reviews);
+            }).catch(err => {
+                cb(err);
+            })
     }
 
     Coffee.remoteMethod(
         'myReviews', {
-          accepts: [{
-            arg: 'id',
-            type: 'string',
-            required: true,
-          },
-          {
-            arg: 'filter',
-            type: 'object',
-            required: false,
-            http: {
-              source: 'query',
+            accepts: [{
+                arg: 'id',
+                type: 'string',
+                required: true,
             },
-          },
-          {
-            arg: 'options',
-            type: 'object',
-            http: 'optionsFromRequest',
-          }],
-          returns: {
-            arg: 'reviews',
-            type: 'object',
-            root: true,
-          },
-          http: {
-            path: '/:id/my-reviews',
-            verb: 'get',
-          },
+            {
+                arg: 'filter',
+                type: 'object',
+                required: false,
+                http: {
+                    source: 'query',
+                },
+            },
+            {
+                arg: 'options',
+                type: 'object',
+                http: 'optionsFromRequest',
+            }],
+            returns: {
+                arg: 'reviews',
+                type: 'object',
+                root: true,
+            },
+            http: {
+                path: '/:id/my-reviews',
+                verb: 'get',
+            },
         }
-      );
+    );
 
-      Coffee.thumbnail = function (id, cb){
-          const Thumbnail = app.models.Thumbnail;
-          Coffee.findById(id)
-          .then(coffee => {
-              if(!coffee || !coffee.image){
-                var err = new Error('Image not found');
-                err.statusCode = 404;
-                return Promise.reject(err);
-              }
-              
-              Thumbnail.generate(coffee.image, cb);
-          })
-          .catch(err => cb(err));
-      }
+    Coffee.thumbnail = function (id, cb) {
+        const Thumbnail = app.models.Thumbnail;
+        Coffee.findById(id)
+            .then(coffee => {
+                if (!coffee || !coffee.image) {
+                    var err = new Error('Image not found');
+                    err.statusCode = 404;
+                    return Promise.reject(err);
+                }
 
-      Coffee.remoteMethod(
+                Thumbnail.generate(coffee.image, cb);
+            })
+            .catch(err => cb(err));
+    }
+
+    Coffee.remoteMethod(
         'thumbnail', {
-          accepts: [{
-            arg: 'id',
-            type: 'string',
-            required: true,
-          }],
-          returns: {
-            arg: 'body',
-            type: 'file',
-            root: true,
-          },
-          http: {
-            path: '/:id/thumbnail',
-            verb: 'get',
-          },
+            accepts: [{
+                arg: 'id',
+                type: 'string',
+                required: true,
+            }],
+            returns: {
+                arg: 'body',
+                type: 'file',
+                root: true,
+            },
+            http: {
+                path: '/:id/thumbnail',
+                verb: 'get',
+            },
         }
-      );
+    );
 
-      Coffee.prototype.train = function(cb) {
+    Coffee.prototype.train = function (cb) {
         var _self = this;
-        if(!_self.trained){
-            if(!_self.image){
+        if (!_self.trained) {
+            if (!_self.image) {
                 return cb(new Error('Image not found for coffee id:' + _self.id.toString()))
             }
-            
-            var image = _self.image.base64 ? {
-                "base64": _self.image.base64
-            }: {
-                "url": (_self.image.url || _self.image)
-            };
-
-            var input = Object.assign({}, image, { 
-                metadata: {
-                    "id" : _self.id,
+            clarifai.inputs.create([{
+                "url": _self.image,
+                "metadata": {
+                    "id": _self.id,
                     "brandId": _self.brandId,
                     "varietyId": _self.varietyId,
                     "model": _self.model || 'Original',
                 }
-            });
+            }]);
 
             clarifai.inputs.create([input]).then(
                 (inputs) => {
@@ -245,18 +239,18 @@ module.exports = (Coffee) => {
                 },
                 (error) => { cb(error) }
             );
-        }else{
+        } else {
             cb(new Error('Coffee Already Trained'))
         }
     };
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
-        if(!coffee.trained && coffee.image){
+        if (!coffee.trained && coffee.image) {
             coffee.train((err, _coffee) => {
                 next(err);
             });
-        }else{
+        } else {
             next();
         }
     })
