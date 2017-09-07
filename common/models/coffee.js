@@ -229,11 +229,13 @@ module.exports = (Coffee) => {
                 "url": (_self.image.url || _self.image)
             };
 
-            var input = Object.assign({}, image, { 
+            var input = {};
+
+            Object.assign(input, image, { 
                 metadata: {
-                    "id" : _self.id,
-                    "brandId": _self.brandId,
-                    "varietyId": _self.varietyId,
+                    "id" : _self.id.toString(),
+                    "brandId": _self.brandId.toString(),
+                    "varietyId": _self.varietyId.toString(),
                     "model": _self.model || 'Original',
                 }
             });
@@ -252,7 +254,7 @@ module.exports = (Coffee) => {
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
-        if(!coffee.trained && coffee.image){
+        if(!coffee.trained && coffee.image && false){
             coffee.train((err, _coffee) => {
                 next(err);
             });
