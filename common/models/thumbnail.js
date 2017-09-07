@@ -19,7 +19,7 @@ const guessImageForJimp = (obj) => {
 }
 
 module.exports = function(Thumbnail) {
-    Thumbnail.generate = function (obj, cb) {
+    Thumbnail.generate = function (obj, res, cb) {
         let image = guessImageForJimp(obj);
         if(!image){
             return cb(new Error('Image not found'));
@@ -28,6 +28,7 @@ module.exports = function(Thumbnail) {
                 return image.contain(250,250);
         })
         .then(image => {
+            res.set('Content-Type', Jimp.MIME_JPEG);
             return image.getBuffer(Jimp.MIME_JPEG, (err, buffer) => cb(err, buffer, Jimp.MIME_JPEG));
         })
         .catch(err => {

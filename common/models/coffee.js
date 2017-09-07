@@ -182,7 +182,7 @@ module.exports = (Coffee) => {
         }
     );
 
-    Coffee.thumbnail = function (id, cb) {
+    Coffee.thumbnail = function (id, res, cb) {
         const Thumbnail = app.models.Thumbnail;
         Coffee.findById(id)
             .then(coffee => {
@@ -191,8 +191,7 @@ module.exports = (Coffee) => {
                     err.statusCode = 404;
                     return Promise.reject(err);
                 }
-
-                Thumbnail.generate(coffee.image, cb);
+                Thumbnail.generate(coffee.image, res, cb);
             })
             .catch(err => cb(err));
     }
@@ -203,6 +202,11 @@ module.exports = (Coffee) => {
                 arg: 'id',
                 type: 'string',
                 required: true,
+            }, 
+            {   
+                arg: 'res',
+                type: 'object',
+                http: {source: 'res'}
             }],
             returns: {
                 arg: 'body',
