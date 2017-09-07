@@ -1,0 +1,30 @@
+{
+  "name": "CoffeeRequest",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "photo_url": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "brand_name": {
+      "type": "string"
+    },
+    "roast": {
+      "type": "number"
+    },
+    "altitude": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
