@@ -16,6 +16,7 @@ module.exports = (Coffee) => {
     /**
      * Runs a query agains the photos of the Coffee bags and returns the top result
      */
+    
     Coffee.search = (image, cb) => {
 
         const query = { input: { base64: image } };
@@ -178,4 +179,41 @@ module.exports = (Coffee) => {
           },
         }
       );
+
+      Coffee.prototype.train = function(cb) {
+        var _self = this;
+        if(!_self.trained){
+            if(!_self.image){
+                return cb(new Error('Image not found for coffee id:' + _self.id.toString()))
+            }
+            clarifai.inputs.create([{
+                "url": _self.image,
+                "metadata": {
+                    "id" : _self.id,
+                    "brandId": _self.brandId,
+                    "varietyId": _self.varietyId,
+                    "model": _self.model || 'Original',
+                },
+            }]).then(
+                (inputs) => {
+                    _self.trained = true;
+                    _self.save(cb);
+                },
+                (error) => { cb(error) }
+            );
+        }else{
+            cb(new Error('Coffee Already Trained'))
+        }
+    };
+
+    Coffee.observe('after save', function (ctx, next) {
+        var coffee = ctx.instance;
+        if(!coffee.trained && coffee.image){
+            coffee.train((err, _coffee) => {
+                next(err);
+            });
+        }else{
+            next();
+        }
+    })
 };
