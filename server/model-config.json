@@ -73,5 +73,9 @@
   "Follow": {
     "dataSource": "db",
     "public": false
+  },
+  "Thumbnail": {
+    "dataSource": null,
+    "public": false
   }
 }

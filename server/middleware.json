@@ -48,7 +48,9 @@
     "./middleware/error-override": {},
     "strong-error-handler": {
       "params": {
-        "safeFields": ["code"]
+        "safeFields": [
+          "code"
+        ]
       }
     }
   }

@@ -37,7 +37,7 @@
       "required": false
     },
     "image": {
-      "type": "string"
+      "type": "object"
     },
     "trained": {
       "type": "boolean",

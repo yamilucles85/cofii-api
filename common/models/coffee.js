@@ -6,6 +6,8 @@ const winston = require("winston");
 
 const ObjectID = require('mongodb').ObjectID;
 
+
+
 // instantiate a new Clarifai app passing in your api key.
 const clarifai = new Clarifai.App({
     // TODO: Remove this
@@ -180,21 +182,63 @@ module.exports = (Coffee) => {
         }
       );
 
+      Coffee.thumbnail = function (id, cb){
+          const Thumbnail = app.models.Thumbnail;
+          Coffee.findById(id)
+          .then(coffee => {
+              if(!coffee || !coffee.image){
+                var err = new Error('Image not found');
+                err.statusCode = 404;
+                return Promise.reject(err);
+              }
+              
+              Thumbnail.generate(coffee.image, cb);
+          })
+          .catch(err => cb(err));
+      }
+
+      Coffee.remoteMethod(
+        'thumbnail', {
+          accepts: [{
+            arg: 'id',
+            type: 'string',
+            required: true,
+          }],
+          returns: {
+            arg: 'body',
+            type: 'file',
+            root: true,
+          },
+          http: {
+            path: '/:id/thumbnail',
+            verb: 'get',
+          },
+        }
+      );
+
       Coffee.prototype.train = function(cb) {
         var _self = this;
         if(!_self.trained){
             if(!_self.image){
                 return cb(new Error('Image not found for coffee id:' + _self.id.toString()))
             }
-            clarifai.inputs.create([{
-                "url": _self.image,
-                "metadata": {
+            
+            var image = _self.image.base64 ? {
+                "base64": _self.image.base64
+            }: {
+                "url": (_self.image.url || _self.image)
+            };
+
+            var input = Object.assign({}, image, { 
+                metadata: {
                     "id" : _self.id,
                     "brandId": _self.brandId,
                     "varietyId": _self.varietyId,
                     "model": _self.model || 'Original',
-                },
-            }]).then(
+                }
+            });
+
+            clarifai.inputs.create([input]).then(
                 (inputs) => {
                     _self.trained = true;
                     _self.save(cb);
