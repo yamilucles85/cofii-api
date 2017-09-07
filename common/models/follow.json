@@ -18,14 +18,14 @@
   "validations": [],
   "relations": {
     "follower": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "Account",
-      "foreignKey": "follower"
+      "foreignKey": "followerId"
     },
     "following": {
-      "type": "hasOne",
+      "type": "belongsTo",
       "model": "Account",
-      "foreignKey": "following"
+      "foreignKey": "followingId"
     }
   },
   "acls": [],

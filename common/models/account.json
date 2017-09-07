@@ -12,7 +12,19 @@
     "reviews": {
       "type": "hasMany",
       "model": "Review",
-      "foreignKey": ""
+      "foreignKey": "userId"
+    },
+    "followers": {
+      "type": "hasMany",
+      "model": "Account",
+      "foreignKey": "followerId",
+      "through": "Follow"
+    },
+    "following": {
+      "type": "hasMany",
+      "model": "Account",
+      "foreignKey": "followingId",
+      "through": "Follow"
     }
   },
   "acls": [
