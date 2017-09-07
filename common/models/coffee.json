@@ -35,6 +35,13 @@
     "catching_score": {
       "type": "number",
       "required": false
+    },
+    "image": {
+      "type": "string"
+    },
+    "trained": {
+      "type": "boolean",
+      "default": false
     }
   },
   "validations": [],
