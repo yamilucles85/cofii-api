@@ -5,7 +5,9 @@ const Clarifai = require("clarifai");
 const winston = require("winston");
 
 const ObjectID = require('mongodb').ObjectID;
+const _ = require("lodash");
 
+const THRESHOLD = 0.5;
 
 
 // instantiate a new Clarifai app passing in your api key.
@@ -23,9 +25,9 @@ module.exports = (Coffee) => {
 
         const query = { input: { base64: image } };
 
-        clarifai.inputs.search(query, { page: 1, perPage: 1 })
+        clarifai.inputs.search(query, { page: 1, perPage: 5 })
             .then((response) => {
-                const hits = response.hits;
+                let hits = response.hits;
 
                 if (!hits) {
                     // Didn't get the hits object or it's empty
@@ -36,8 +38,15 @@ module.exports = (Coffee) => {
                     return cb(null, null);
                 }
 
+                hits = _.sortBy(hits, "score");
+                hits = hits.reverse();
+
+                if (hits[0].score < THRESHOLD) {
+                    return cb();
+                }
+
                 const metadata = hits[0].input.data.metadata;
-                console.log(metadata);
+
                 Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
             })
             .catch((err) => {
