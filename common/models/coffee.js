@@ -240,12 +240,15 @@ module.exports = (Coffee) => {
                 }
             });
 
-            clarifai.inputs.create([input]).then(
+            clarifai.inputs.create(input).then(
                 (inputs) => {
                     _self.trained = true;
                     _self.save(cb);
                 },
-                (error) => { cb(error) }
+                (err) => {
+                    console.log(err);
+                    cb(new Error('Error while training'));
+                }
             );
         }else{
             cb(new Error('Coffee Already Trained'))
