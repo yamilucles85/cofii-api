@@ -360,7 +360,7 @@ module.exports = (Coffee) => {
                 var bufferStream = new stream.PassThrough();
                 upload.on('err', next);
                 upload.on('finish', () => {
-                    coffee.image.url =  buildS3Url(BUCKET_NAME,fileName);
+                    coffee.image =  { url: buildS3Url(BUCKET_NAME,fileName) };
                     coffee.save((err, data) => {
                         next(err);
                     });
