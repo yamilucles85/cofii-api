@@ -2,8 +2,9 @@ var mongodbUri = require('mongodb-uri');
 
 var URI = process.env.MONGODB_URI || "mongodb://strk9:coffii@ds127963.mlab.com:27963/coffii";
 var uriObject = URI ? mongodbUri.parse(URI) : null;
-var config = {};
+var config = require('./datasources.json') || {};
 
+// override mongodb config
 if (uriObject && uriObject.hosts.length >= 1) {
   config.db = {
     name: 'db',
@@ -14,6 +15,19 @@ if (uriObject && uriObject.hosts.length >= 1) {
     username: uriObject.username,
     password: uriObject.password,
   };
+}
+
+// override s3 config
+const S3_KEY = process.env.S3_KEY;
+const S3_KEY_ID = process.env.S3_KEY_ID;
+
+if(config.storage || config.storage.provider === 'amazon'){
+  if(S3_KEY){
+    config.storage.key = S3_KEY;
+  }
+  if(S3_KEY_ID){
+    config.storage.key = S3_KEY_ID;
+  }
 }
 
 module.exports = config;

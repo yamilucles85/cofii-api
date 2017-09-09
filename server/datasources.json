@@ -7,5 +7,14 @@
     "name": "db",
     "user": "strk9",
     "connector": "mongodb"
+  },
+  "storage": {
+    "provider": "amazon",
+    "key": "...",
+    "keyId": "...",
+    "acl": "public-read",
+    "allowedContentTypes": [
+      "image/png", "image/jpeg"
+    ]
   }
 }
