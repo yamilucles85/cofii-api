@@ -71,7 +71,7 @@ module.exports = (Coffee) => {
         var filter = {
             coffeeId: id,
             userId: currentUserId,
-            methodId: null
+            methodId: null,
         }
 
         if (data.methodId) {

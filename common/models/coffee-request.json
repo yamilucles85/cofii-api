@@ -6,21 +6,13 @@
     "validateUpsert": true
   },
   "properties": {
-    "photo_url": {
+    "photo": {
       "type": "string",
       "required": true
     },
-    "name": {
-      "type": "string"
-    },
-    "brand_name": {
-      "type": "string"
-    },
-    "roast": {
-      "type": "number"
-    },
-    "altitude": {
-      "type": "number"
+    "comment": {
+      "type": "string",
+      "required": false
     }
   },
   "validations": [],
