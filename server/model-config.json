@@ -74,8 +74,16 @@
     "dataSource": "db",
     "public": false
   },
+  "Thumbnail": {
+    "dataSource": null,
+    "public": false
+  },
   "CoffeeRequest": {
     "dataSource": "db",
+    "public": true
+  },
+  "Container": {
+    "dataSource": "storage",
     "public": true
   }
 }
