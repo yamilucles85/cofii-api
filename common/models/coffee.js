@@ -1,4 +1,4 @@
-const app = require('../../server/server');
+const app = require("../../server/server");
 
 const Clarifai = require("clarifai");
 
@@ -13,6 +13,7 @@ const THRESHOLD = 0.5;
 
 const BUCKET_NAME = process.env.BUCKET_NAME;
 
+
 // instantiate a new Clarifai app passing in your api key.
 const clarifai = new Clarifai.App({
     // TODO: Remove this
@@ -26,7 +27,62 @@ const buildS3Url = (bucket, fileName) => {
 module.exports = (Coffee) => {
     /**
      * Runs a query agains the photos of the Coffee bags and returns the top result
-     */
+
+     
+     filters: {
+        coffee_name,
+        alltitude,
+        rating,
+        variety,
+        coffee_type
+
+    } */
+    Coffee.explora = (filters, cb) => {
+        const Brand = app.models.Brand;
+        console.log(filters);
+        const _filters = filters || {};
+        //console.log(_filters);
+        // const BrandCollection = Brand.getDataSource().connector.collection(Brand.modelName);
+        const query = {};
+        if (_filters.hasOwnProperty("coffee_name") && Object.keys(filters).length === 1) {
+            query.name = { $regex: filters.coffee_name };
+            query.includes = ["coffee", "variety", "reviews"];
+
+            Brand.find({ where: query }, (err, result) => {
+
+                if (err)
+                { console.log(`Error ${err}`); return cb(err, null); }
+
+                return cb(null, result);
+            });
+        } else {
+            query.includes = ["brand", "variety", "reviews"];
+
+            if (_filters.hasOwnProperty("altitude"))
+            { query.altitude = filters.altitude; }
+
+            if (_filters.hasOwnProperty("price"))
+            { query.price = { between: filters.price }; }
+
+            if (_filters.hasOwnProperty("avg_rating"))
+            { query.price = { between: filters.rating }; }
+
+            Coffee.find({ where: query }, (err, result) => {
+                if (err)
+                { return cb(err, null); }
+
+                return cb(null, result);
+            });
+        }
+
+    };
+
+    Coffee.remoteMethod("explora", {
+        description: "Searches coffee based on filters",
+        accepts: { arg: "filters", type: "object" },
+        return: { arg: "result", tpye: "array", root: true },
+    });
+
 
     Coffee.search = (image, cb) => {
 
@@ -72,14 +128,14 @@ module.exports = (Coffee) => {
     Coffee.sendReview = (id, data, options, cb) => {
         const Review = app.models.Review;
 
-        var token = options && options.accessToken;
-        var currentUserId = token && token.userId;
+        let token = options && options.accessToken;
+        let currentUserId = token && token.userId;
 
-        var filter = {
+        let filter = {
             coffeeId: id,
             userId: currentUserId,
             methodId: null,
-        }
+        };
 
         if (data.methodId) {
             filter.methodId = data.methodId;
@@ -87,6 +143,7 @@ module.exports = (Coffee) => {
         }
 
         if (!currentUserId) {
+
             return cb(new Error('User not logged in'));
         }
 
@@ -94,11 +151,16 @@ module.exports = (Coffee) => {
             .then(_review => {
                 var review = _review;
 
+
                 if (!review) {
                     review = new Review({
                         coffeeId: new ObjectID(id),
                         userId: currentUserId,
+
+                        methodId: null,
+
                         methodId: null
+
                     });
                 }
 
@@ -145,8 +207,8 @@ module.exports = (Coffee) => {
     Coffee.myReviews = (id, filter, options, cb) => {
         const Review = app.models.Review;
 
-        var token = options && options.accessToken;
-        var currentUserId = token && token.userId;
+        let token = options && options.accessToken;
+        let currentUserId = token && token.userId;
 
         var filter = filter || {};
 
@@ -156,8 +218,8 @@ module.exports = (Coffee) => {
         Review.find({
             where: filter,
             include: [
-                { coffee: ['brand', 'variety'] }, 'method'
-            ]
+                { coffee: ["brand", "variety"] }, "method",
+            ],
         })
             .then(_reviews => {
                 cb(null, _reviews);
