@@ -11,6 +11,8 @@
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
+    "aws-sdk": "^2.112.0",
+    "bluebird": "^3.5.0",
     "blueimp-md5": "^2.10.0",
     "clarifai": "^2.2.0",
     "compression": "^1.0.3",
@@ -28,6 +30,7 @@
     "loopback-component-passport": "^3.4.0",
     "loopback-connector-mongodb": "^1.18.1",
     "mongodb-uri": "^0.9.7",
+    "node-sha1": "^1.0.1",
     "node-tesseract": "^0.2.7",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
