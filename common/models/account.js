@@ -340,7 +340,7 @@ module.exports = function (Account) {
             return Review.find({
                 where: {
                     userId: {
-                        inq: usersIds
+                        inq: usersIds.concat([currentUserId])
                     }
                 },
                 include: [
