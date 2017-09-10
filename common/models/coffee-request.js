@@ -20,7 +20,7 @@ module.exports = function handler(Coffeerequest) {
         const s3 = new AWS.S3();
 
         const accessToken = ctx.options.accessToken;
-        const fileImageKey = sha1(`${accessToken}-${Date.now()}`);
+        const fileImageKey = sha1(`${accessToken}-${Date.now()}.jpg`);
 
         const imgBuffer = new Buffer(coffeeRequest.coffee.image, "base64");
 
