@@ -323,4 +323,52 @@ module.exports = function (Account) {
                 verb: "post",
             },
         });
+
+    Account.timeline = (options, cb) => {
+        const Follow = app.models.Follow;
+        const Review = app.models.Review;
+        let token = options && options.accessToken;
+        let currentUserId = token && token.userId;
+
+
+        Follow.find({where: { followerId: currentUserId, accepted: true }})
+        .then(users => {
+            return users.map(u => {
+                return u.followingId;
+            });
+        }).then(usersIds => {
+            return Review.find({
+                where: {
+                    userId: {
+                        inq: usersIds
+                    }
+                },
+                include: [
+                    { coffee: ["brand", "variety"] }, "method", "user",
+                ],
+                order: 'createdAt DESC',
+                limit: 500
+            });
+        }).then(reviews => {
+            cb(null, reviews);
+        }).catch(err => cb(err));
+    }
+
+    Account.remoteMethod(
+        "timeline", {
+            accepts: [{
+                arg: "options",
+                type: "object",
+                http: "optionsFromRequest",
+            }],
+            returns: {
+                arg: "posts",
+                root: true,
+                type: "object",
+            },
+            http: {
+                path: "/timeline",
+                verb: "get",
+            },
+        });
 };

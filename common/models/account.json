@@ -157,5 +157,6 @@
       "property": "avatar"
     }
   ],
+  "protected": ["email"],
   "methods": {}
 }
