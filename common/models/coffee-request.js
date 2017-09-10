@@ -5,13 +5,13 @@ const AWS = require("aws-sdk");
 const sha1 = require("node-sha1");
 
 AWS.config.update({
-    accessKeyId: "AKIAJBHSYYCOQZNVEH5A",
-    secretAccessKey: "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",
+    accessKeyId: "AKIAJJRYTDV4VIPNLGUQ",
+    secretAccessKey: "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",
     signatureVersion: "v4",
 });
 
 // TODO: Get it from ENV
-const Bucket = "coffii";
+const Bucket = "coffii-prod";
 
 module.exports = function handler(Coffeerequest) {
     Coffeerequest.observe("before save", (ctx, next) => {
@@ -20,9 +20,9 @@ module.exports = function handler(Coffeerequest) {
         const s3 = new AWS.S3();
 
         const accessToken = ctx.options.accessToken;
-        const fileImageKey = sha1(`${accessToken}-${Date.now()}`);
+        const fileImageKey = sha1(`${accessToken}-${Date.now()}.jpg`);
 
-        const imgBuffer = new Buffer(coffeeRequest.photo, "base64");
+        const imgBuffer = new Buffer(coffeeRequest.coffee.image, "base64");
 
         const params = {
             Bucket,
@@ -35,10 +35,9 @@ module.exports = function handler(Coffeerequest) {
             .then((resp) => {
 
                 // Set the photo to the URL on S3
-                coffeeRequest.photo = resp.Location;
+                coffeeRequest.coffee.image = resp.Location;
                 
                 ctx.instance = coffeeRequest;
-                console.log(JSON.stringify(ctx.instance));
                 return next();
             })
             .catch((err) => {

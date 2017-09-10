@@ -27,6 +27,11 @@
       "foreignKey": "followerId",
       "through": "Follow",
       "keyThrough": "followingId"
+    },
+    "coffeeRequests": {
+      "type": "hasMany",
+      "model": "CoffeeRequest",
+      "foreignKey": ""
     }
   },
   "acls": [

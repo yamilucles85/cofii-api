@@ -1,7 +1,10 @@
 {
-    "name": "Thumbnail",
-    "base": "Model",
-    "options": {},
-    "properties": {},
-    "methods": {}
-  }
+  "name": "Thumbnail",
+  "base": "Model",
+  "options": {},
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
