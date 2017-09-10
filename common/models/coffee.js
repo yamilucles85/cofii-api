@@ -44,19 +44,25 @@ module.exports = (Coffee) => {
         //console.log(_filters);
         // const BrandCollection = Brand.getDataSource().connector.collection(Brand.modelName);
         const query = {};
-        if (_filters.hasOwnProperty("coffee_name") && Object.keys(filters).length === 1) {
-            query.name = { $regex: filters.coffee_name };
-            query.includes = ["coffee", "variety", "reviews"];
 
-            Brand.find({ where: query }, (err, result) => {
+        const queryBrands = filters.hasOwnProperty("coffee_name") ? Brand.find({
+            where: {
+                name: { like: new RegExp(".*" + filters.coffee_name + ".*", "i") }
+            }
+        }) : Promise.resolve([]);
 
-                if (err)
-                { console.log(`Error ${err}`); return cb(err, null); }
-
-                return cb(null, result);
-            });
-        } else {
-            query.includes = ["brand", "variety", "reviews"];
+        queryBrands.then(brands => {
+            return brands.map(
+                (x) => {
+                    return x.id;
+                }
+            )
+        }).then(brandsIds => {
+            if (filters.hasOwnProperty("coffee_name") || brandsIds.length) {
+                query.brandId = {
+                    inq: brandsIds
+                }
+            }
 
             if (_filters.hasOwnProperty("altitude"))
             { query.altitude = filters.altitude; }
@@ -67,20 +73,23 @@ module.exports = (Coffee) => {
             if (_filters.hasOwnProperty("avg_rating"))
             { query.price = { between: filters.rating }; }
 
-            Coffee.find({ where: query }, (err, result) => {
-                if (err)
-                { return cb(err, null); }
-
-                return cb(null, result);
-            });
-        }
-
+            Coffee.find({ where: query, include: ["brand", "variety"] }, cb);
+        }).catch(err => cb(err));
     };
 
     Coffee.remoteMethod("explora", {
         description: "Searches coffee based on filters",
-        accepts: { arg: "filters", type: "object" },
-        return: { arg: "result", tpye: "array", root: true },
+        accepts: [{
+            arg: "filters", type: "object", required: true,
+            http: {
+                source: 'body',
+            }
+        }],
+        returns: { arg: "result", type: "object", root: true },
+        http: {
+            path: '/explora',
+            verb: 'post',
+        },
     });
 
 
@@ -280,16 +289,16 @@ module.exports = (Coffee) => {
                 arg: 'id',
                 type: 'string',
                 required: true,
-            }, 
-            {   
+            },
+            {
                 arg: 'size',
                 type: 'string',
-                http: {source: 'query'}
+                http: { source: 'query' }
             },
-            {   
+            {
                 arg: 'res',
                 type: 'object',
-                http: {source: 'res'}
+                http: { source: 'res' }
             }],
             returns: {
                 arg: 'body',
@@ -306,44 +315,44 @@ module.exports = (Coffee) => {
 
     Coffee.relatedCoffees = function (id, cb) {
         Coffee.findById(id)
-        .then(_coffee => {
-            if (!_coffee){
-                return {};
-            }
-            return Promise.all([
-                Coffee.find({
-                    where: {
-                        id: {
-                            neq: _coffee.id
-                        },
-                        brandId: _coffee.brandId,
-                        model: _coffee.model
-                    }
-                }),
-                Coffee.find({
-                    where: {
-                        id: {
-                            neq: _coffee.id
-                        },
-                        brandId: _coffee.brandId,
-                        varietyId: _coffee.varietyId
-                    }
-                })
-            ]).then(
-                results => {
-                    return {
-                        varieties: results[0],
-                        models: results[1]
-                    }
+            .then(_coffee => {
+                if (!_coffee) {
+                    return {};
                 }
-            );
-        })
-        .then(response => {
-            cb(null, response);
-        })
-        .catch(err => {
-            cb(err)
-        })
+                return Promise.all([
+                    Coffee.find({
+                        where: {
+                            id: {
+                                neq: _coffee.id
+                            },
+                            brandId: _coffee.brandId,
+                            model: _coffee.model
+                        }
+                    }),
+                    Coffee.find({
+                        where: {
+                            id: {
+                                neq: _coffee.id
+                            },
+                            brandId: _coffee.brandId,
+                            varietyId: _coffee.varietyId
+                        }
+                    })
+                ]).then(
+                    results => {
+                        return {
+                            varieties: results[0],
+                            models: results[1]
+                        }
+                    }
+                    );
+            })
+            .then(response => {
+                cb(null, response);
+            })
+            .catch(err => {
+                cb(err)
+            })
     }
 
     Coffee.remoteMethod(
@@ -404,32 +413,32 @@ module.exports = (Coffee) => {
         }
     };
 
-/*     Coffee.observe('after save', function (ctx, next) {
-        const Container = app.models.Container;
-        const Thumbnail = app.models.Thumbnail;
-        var coffee = ctx.instance;
-        var fileName = `coffee-${coffee.id.toString()}.jpg`;
-        if (coffee.image && coffee.image.base64 && !coffee.image.url) {
-            Thumbnail.generate(coffee.image, {size: 'original'}, null, (err, buffer) => {
-                if(err){
-                    return next(err);
-                }
-                var upload = Container.uploadStream(BUCKET_NAME, fileName);
-                var bufferStream = new stream.PassThrough();
-                upload.on('err', next);
-                upload.on('finish', () => {
-                    coffee.image =  { url: buildS3Url(BUCKET_NAME,fileName) };
-                    coffee.save((err, data) => {
-                        next(err);
+    /*     Coffee.observe('after save', function (ctx, next) {
+            const Container = app.models.Container;
+            const Thumbnail = app.models.Thumbnail;
+            var coffee = ctx.instance;
+            var fileName = `coffee-${coffee.id.toString()}.jpg`;
+            if (coffee.image && coffee.image.base64 && !coffee.image.url) {
+                Thumbnail.generate(coffee.image, {size: 'original'}, null, (err, buffer) => {
+                    if(err){
+                        return next(err);
+                    }
+                    var upload = Container.uploadStream(BUCKET_NAME, fileName);
+                    var bufferStream = new stream.PassThrough();
+                    upload.on('err', next);
+                    upload.on('finish', () => {
+                        coffee.image =  { url: buildS3Url(BUCKET_NAME,fileName) };
+                        coffee.save((err, data) => {
+                            next(err);
+                        });
                     });
+                    bufferStream.end(buffer);
+                    bufferStream.pipe(upload);
                 });
-                bufferStream.end(buffer);
-                bufferStream.pipe(upload);
-            });
-        }else{
-            next();
-        }
-    }); */
+            }else{
+                next();
+            }
+        }); */
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
