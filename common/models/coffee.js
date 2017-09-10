@@ -156,11 +156,7 @@ module.exports = (Coffee) => {
                     review = new Review({
                         coffeeId: new ObjectID(id),
                         userId: currentUserId,
-
                         methodId: null,
-
-                        methodId: null
-
                     });
                 }
 

@@ -1,5 +1,7 @@
 "use strict";
 
+const app = require("../../server/server");
+
 var md5 = require("blueimp-md5");
 
 var GRAVATAR_URI = "https://www.gravatar.com/avatar/";
@@ -239,31 +241,86 @@ module.exports = function (Account) {
             },
         });
 
-    // Account.me = function (options, cb) {
-    //     const { accessToken } = options;
-    //     console.log(accessToken);
-    //     cb("ERROR");
-    // };
+    Account.follow = (id, options, cb) => {
+        const Follow = app.models.Follow;
+        let token = options && options.accessToken;
+        let currentUserId = token && token.userId;
 
-    // Account.remoteMethod(
-    //     "me",
-    //     {
-    //         returns: {
-    //             arg: "user",
-    //             type: "object",
-    //             root: true,
-    //         },
-    //         http: {
-    //             path: "/me",
-    //             verb: "get",
-    //         },
-    //         accepts: [
-    //             {
-    //                 arg: "options",
-    //                 type: "object",
-    //                 http: "optionsFromRequest",
-    //             },
-    //         ],
-    //     },
-    // );
+        const relationship = {
+            followingId: id,
+            followerId: currentUserId
+        };
+
+        if(id.toString() === currentUserId.toString()){
+            return cb(new Error('Can\'t not follow your self'), false);
+        }
+
+        Follow.findOne({ where: relationship }).then(_relationship => {
+            if (!_relationship) {
+                var follow = new Follow(relationship);
+                follow.save((err, _data) => {
+                    cb(err, !err ? true : false);
+                })
+            } else {
+                cb(null, true)
+            }
+        }).catch(err => cb(err, false));
+    }
+
+    Account.remoteMethod(
+        "follow", {
+            accepts: [{
+                arg: "id",
+                type: "string",
+                required: true,
+            }, {
+                arg: "options",
+                type: "object",
+                http: "optionsFromRequest",
+            }],
+            returns: {
+                arg: "success",
+                type: "boolean",
+            },
+            http: {
+                path: "/:id/follow",
+                verb: "post",
+            },
+        });
+
+    Account.unfollow = (id, options, cb) => {
+        const Follow = app.models.Follow;
+        let token = options && options.accessToken;
+        let currentUserId = token && token.userId;
+
+        const relationship = {
+            followingId: id,
+            followerId: currentUserId
+        };
+
+        Follow.destroyAll(relationship, (err, info) => {
+            cb(err, !err ? true : false);
+        });
+    }
+
+    Account.remoteMethod(
+        "unfollow", {
+            accepts: [{
+                arg: "id",
+                type: "string",
+                required: true,
+            }, {
+                arg: "options",
+                type: "object",
+                http: "optionsFromRequest",
+            }],
+            returns: {
+                arg: "success",
+                type: "boolean",
+            },
+            http: {
+                path: "/:id/unfollow",
+                verb: "post",
+            },
+        });
 };

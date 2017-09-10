@@ -17,14 +17,16 @@
     "followers": {
       "type": "hasMany",
       "model": "Account",
-      "foreignKey": "followerId",
-      "through": "Follow"
+      "foreignKey": "followingId",
+      "through": "Follow",
+      "keyThrough": "followerId"
     },
     "following": {
       "type": "hasMany",
       "model": "Account",
-      "foreignKey": "followingId",
-      "through": "Follow"
+      "foreignKey": "followerId",
+      "through": "Follow",
+      "keyThrough": "followingId"
     },
     "coffeeRequests": {
       "type": "hasMany",
