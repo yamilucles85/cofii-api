@@ -5,13 +5,13 @@ const AWS = require("aws-sdk");
 const sha1 = require("node-sha1");
 
 AWS.config.update({
-    accessKeyId: "AKIAJBHSYYCOQZNVEH5A",
-    secretAccessKey: "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",
+    accessKeyId: "AKIAJJRYTDV4VIPNLGUQ",
+    secretAccessKey: "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",
     signatureVersion: "v4",
 });
 
 // TODO: Get it from ENV
-const Bucket = "coffii";
+const Bucket = "coffii-prod";
 
 module.exports = function handler(Coffeerequest) {
     Coffeerequest.observe("before save", (ctx, next) => {
