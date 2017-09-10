@@ -9,12 +9,14 @@
     "connector": "mongodb"
   },
   "storage": {
+    "name": "storage",
     "provider": "amazon",
     "key": "...",
     "keyId": "...",
     "acl": "public-read",
     "allowedContentTypes": [
-      "image/png", "image/jpeg"
+      "image/png",
+      "image/jpeg"
     ]
   }
 }

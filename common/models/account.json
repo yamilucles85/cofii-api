@@ -25,6 +25,11 @@
       "model": "Account",
       "foreignKey": "followingId",
       "through": "Follow"
+    },
+    "coffeeRequests": {
+      "type": "hasMany",
+      "model": "CoffeeRequest",
+      "foreignKey": ""
     }
   },
   "acls": [

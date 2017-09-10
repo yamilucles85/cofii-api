@@ -22,7 +22,7 @@ module.exports = function handler(Coffeerequest) {
         const accessToken = ctx.options.accessToken;
         const fileImageKey = sha1(`${accessToken}-${Date.now()}`);
 
-        const imgBuffer = new Buffer(coffeeRequest.photo, "base64");
+        const imgBuffer = new Buffer(coffeeRequest.coffee.image, "base64");
 
         const params = {
             Bucket,
@@ -35,10 +35,9 @@ module.exports = function handler(Coffeerequest) {
             .then((resp) => {
 
                 // Set the photo to the URL on S3
-                coffeeRequest.photo = resp.Location;
+                coffeeRequest.coffee.image = resp.Location;
                 
                 ctx.instance = coffeeRequest;
-                console.log(JSON.stringify(ctx.instance));
                 return next();
             })
             .catch((err) => {
