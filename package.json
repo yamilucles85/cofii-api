@@ -30,6 +30,7 @@
     "loopback-component-passport": "^3.4.0",
     "loopback-component-storage": "^3.3.1",
     "loopback-connector-mongodb": "^1.18.1",
+    "loopback3-xtotalcount": "^0.1.2",
     "mongodb-uri": "^0.9.7",
     "node-sha1": "^1.0.1",
     "node-tesseract": "^0.2.7",
