@@ -22,7 +22,7 @@ const guessImageForJimp = (obj) => {
     if(obj.url){
         return obj.url;
     }
-    return obj.base64 ? bufferFromBase64(obj.base64) : (obj || null);
+    return obj.base64 ? bufferFromBase64(obj.base64.replace(/^data:image\/\w+;base64,/, '')) : (obj || null);
 }
 
 const resizeImage = (image, options) => {
