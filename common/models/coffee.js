@@ -97,7 +97,7 @@ module.exports = (Coffee) => {
 
         const query = { input: { base64: image } };
 
-        clarifai.inputs.search(query, { page: 1, perPage: 5 })
+        clarifai.inputs.search(query, { page: 1, perPage: 15 })
             .then((response) => {
                 let hits = response.hits;
 
@@ -413,33 +413,33 @@ module.exports = (Coffee) => {
         }
     };
 
-    /*     Coffee.observe('after save', function (ctx, next) {
-            const Container = app.models.Container;
-            const Thumbnail = app.models.Thumbnail;
-            var coffee = ctx.instance;
-            var fileName = `coffee-${coffee.id.toString()}.jpg`;
-            if (coffee.image && coffee.image.base64 && !coffee.image.url) {
-                Thumbnail.generate(coffee.image, {size: 'original'}, null, (err, buffer) => {
-                    if(err){
-                        return next(err);
-                    }
-                    var upload = Container.uploadStream(BUCKET_NAME, fileName);
-                    var bufferStream = new stream.PassThrough();
-                    upload.on('err', next);
-                    upload.on('finish', () => {
-                        coffee.image =  { url: buildS3Url(BUCKET_NAME,fileName) };
-                        coffee.save((err, data) => {
-                            next(err);
-                        });
+    Coffee.observe('after save', function (ctx, next) {
+        const Container = app.models.Container;
+        const Thumbnail = app.models.Thumbnail;
+        var coffee = ctx.instance;
+        var fileName = `coffee-${coffee.id.toString()}.jpg`;
+        if (coffee.image && coffee.image.base64 && !coffee.image.url) {
+            Thumbnail.generate(coffee.image, { size: 'original' }, null, (err, buffer) => {
+                if (err) {
+                    return next(err);
+                }
+                var upload = Container.uploadStream(BUCKET_NAME, fileName);
+                var bufferStream = new stream.PassThrough();
+                upload.on('err', next);
+                upload.on('finish', () => {
+                    coffee.image = { url: buildS3Url(BUCKET_NAME, fileName) };
+                    coffee.save((err, data) => {
+                        next(err);
                     });
-                    bufferStream.end(buffer);
-                    bufferStream.pipe(upload);
                 });
-            }else{
-                next();
-            }
-        }); */
-
+                bufferStream.end(buffer);
+                bufferStream.pipe(upload);
+            });
+        } else {
+            next();
+        }
+    });
+    
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
         if (!coffee.trained && coffee.image) {
@@ -450,4 +450,43 @@ module.exports = (Coffee) => {
             next();
         }
     });
+
+    Coffee.trainAgain = (id, cb) => {
+        Coffee.findById(id)
+            .then(_coffee => {
+                clarifai.inputs.search({
+                    input: {
+                        metadata: {
+                            id: _self.id.toString()
+                        }
+                    }
+                }).then((response) => {
+                    clarifai.inputs
+                        .delete(response.hits.map(x => x.input.data.metadata.id))
+                        .then(_response => {
+                            _coffee.trained = false;
+                            _coffee.save(cb);
+                        }, cb);
+                }, cb);
+            }).catch(err => cb(err));
+    }
+
+    Coffee.remoteMethod(
+        'trainAgain', {
+            accepts: [{
+                arg: 'id',
+                type: 'string',
+                required: true,
+            }],
+            returns: {
+                arg: 'response',
+                type: 'object',
+                root: true,
+            },
+            http: {
+                path: '/:id/train-again',
+                verb: 'get',
+            },
+        }
+    );
 };

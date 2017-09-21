@@ -18,15 +18,15 @@ if (uriObject && uriObject.hosts.length >= 1) {
 }
 
 // override s3 config
-const S3_KEY = process.env.S3_KEY;
-const S3_KEY_ID = process.env.S3_KEY_ID;
+const S3_KEY = process.env.S3_KEY || "PqkhurKwIBjj+ckVbOZxrPHZrD1lhqm+C3M9XuHp";
+const S3_KEY_ID = process.env.S3_KEY_ID || "AKIAJJRYTDV4VIPNLGUQ";
 
 if(config.storage || config.storage.provider === 'amazon'){
   if(S3_KEY){
     config.storage.key = S3_KEY;
   }
   if(S3_KEY_ID){
-    config.storage.key = S3_KEY_ID;
+    config.storage.keyId = S3_KEY_ID;
   }
 }
 
