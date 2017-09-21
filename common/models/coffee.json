@@ -18,6 +18,7 @@
     },
     "avg_rating": {
       "type": "number",
+      "default": 0,
       "required": true
     },
     "altitude": {
