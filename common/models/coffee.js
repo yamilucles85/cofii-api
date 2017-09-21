@@ -9,7 +9,7 @@ const stream = require('stream');
 const ObjectID = require('mongodb').ObjectID;
 const _ = require("lodash");
 
-const THRESHOLD = 0.8;
+const THRESHOLD = 0.6;
 
 const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
