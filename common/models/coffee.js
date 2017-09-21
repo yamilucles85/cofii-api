@@ -141,8 +141,8 @@ module.exports = (Coffee) => {
                     return metadata && !!metadata.id && hit.score >= THRESHOLD;
                 }).map(hit => {
                     return {
-                        id: hit.id,
-                        score: score
+                        id: hit.input.data.metadata.id,
+                        score: hit.score
                     }
                 });
 
