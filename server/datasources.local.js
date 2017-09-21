@@ -22,6 +22,7 @@ const S3_KEY = process.env.S3_KEY || "PqkhurKwIBjj+ckVbOZxrPHZrD1lhqm+C3M9XuHp";
 const S3_KEY_ID = process.env.S3_KEY_ID || "AKIAJJRYTDV4VIPNLGUQ";
 
 if(config.storage || config.storage.provider === 'amazon'){
+  config.storage = require('loopback-component-storage');
   if(S3_KEY){
     config.storage.key = S3_KEY;
   }
