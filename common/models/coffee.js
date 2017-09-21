@@ -184,12 +184,12 @@ module.exports = (Coffee) => {
                         results = results.reverse();
     
                         if (!results.length || results[0].score < THRESHOLD) {
-                            return cb({
+                            return cb(null, {
                                 results: results
                             });
                         }
 
-                        cb({
+                        cb(null, {
                             id: results[0].id,
                             results: results
                         });
