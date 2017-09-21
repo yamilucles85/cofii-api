@@ -490,7 +490,7 @@ module.exports = (Coffee) => {
             },
             http: {
                 path: '/:id/train-again',
-                verb: 'get',
+                verb: 'post',
             },
         }
     );
