@@ -11,7 +11,7 @@ const _ = require("lodash");
 
 const THRESHOLD = 0.8;
 
-const BUCKET_NAME = process.env.BUCKET_NAME;
+const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
 
 // instantiate a new Clarifai app passing in your api key.
@@ -439,7 +439,7 @@ module.exports = (Coffee) => {
             next();
         }
     });
-    
+
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
         if (!coffee.trained && coffee.image) {
