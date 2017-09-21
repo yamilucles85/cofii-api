@@ -414,11 +414,21 @@ module.exports = (Coffee) => {
     };
 
     Coffee.observe('after save', function (ctx, next) {
+        var coffee = ctx.instance;
+        if (!coffee.trained && coffee.image) {
+            coffee.train((err, _coffee) => {
+                next(err);
+            });
+        } else {
+            next();
+        }
+    });
+
+    Coffee.observe('after save', function (ctx, next) {
         const Container = app.models.Container;
         const Thumbnail = app.models.Thumbnail;
         var coffee = ctx.instance;
         var fileName = `coffee-${coffee.id.toString()}.jpg`;
-        console.log(Container);
 
         if (coffee.image && coffee.image.base64 && !coffee.image.url) {
             Thumbnail.generate(coffee.image, { size: 'original' }, null, (err, buffer) => {
@@ -427,7 +437,7 @@ module.exports = (Coffee) => {
                 }
                 var upload = Container.uploadStream(BUCKET_NAME, fileName, {
                     acl: 'public-read'
-                });
+                }, () => {});
                 var bufferStream = new stream.PassThrough();
                 upload.on('err', next);
                 upload.on('finish', () => {
@@ -438,17 +448,6 @@ module.exports = (Coffee) => {
                 });
                 bufferStream.end(buffer);
                 bufferStream.pipe(upload);
-            });
-        } else {
-            next();
-        }
-    });
-
-    Coffee.observe('after save', function (ctx, next) {
-        var coffee = ctx.instance;
-        if (!coffee.trained && coffee.image && coffee.image.url) {
-            coffee.train((err, _coffee) => {
-                next(err);
             });
         } else {
             next();
