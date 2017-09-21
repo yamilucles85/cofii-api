@@ -464,11 +464,11 @@ module.exports = (Coffee) => {
             if(!_coffee){
                 return cb(new Error('Coffee not found'));
             }
-            
+
             clarifai.inputs.search({
                 input: {
                     metadata: {
-                        id: _self.id.toString()
+                        id: _coffee.id.toString()
                     }
                 }
             }).then((response) => {
