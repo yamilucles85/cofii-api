@@ -21,7 +21,7 @@ const clarifai = new Clarifai.App({
 });
 
 const buildS3Url = (bucket, fileName) => {
-    return `https://s3-us-west-2.amazonaws.com/${bucket}/${fileName}`;
+    return `https://s3.amazonaws.com/${bucket}/${fileName}`;
 }
 
 module.exports = (Coffee) => {
