@@ -166,9 +166,10 @@ module.exports = (Coffee) => {
                             }
                         },
                         limit: 10
-                    }, (err, results) => {
-                        if (err) {
-                            return cb(err);
+                    }, (_err, results) => {
+                        if (_err) {
+                            console.log(err);
+                            return cb(_err);
                         }
     
                         results = results.map(item => {
