@@ -21,7 +21,7 @@ const temp = require("temp");
 
 const bufferToPath = (buffer, cb) => {
     temp.open({ suffix: '.jpg' }, function (err, info) {
-        if (err) throw err;
+        if (err) cb(err);
         fs.write(info.fd, buffer);
         fs.close(info.fd, function (err) {
             cb(err, info.path);
@@ -36,7 +36,7 @@ const imageToOCR = (buffer, cb) => {
             if (err) {
                 cb(err);
             } else {
-                cb(text);
+                cb(null, text);
             }
         });
     });
@@ -470,8 +470,7 @@ module.exports = (Coffee) => {
                 }
             });
 
-
-            Thumbnail.generate(_coffee.image, { size: 'original' }, null, (err, buffer) => {
+            Thumbnail.generate(_self.image, { size: 'original' }, null, (err, buffer) => {
                 if(err) return cb(err);
                 imageToOCR(buffer, (err, ocr) => {
                     if(err) return cb(err);
