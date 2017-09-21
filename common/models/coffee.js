@@ -477,7 +477,14 @@ module.exports = (Coffee) => {
                     .delete(deleteIds)
                     .then(_response => {
                         _coffee.trained = false;
-                        _coffee.train(cb);
+                        _coffee.train((err, _c) => {
+                            if(err){
+                               _c.trained = false;
+                               _c.save(cb);
+                            }else{
+                                cb(null, _c);
+                            }
+                        });
                     }, cb);
             }, cb);
         });
