@@ -418,6 +418,8 @@ module.exports = (Coffee) => {
         const Thumbnail = app.models.Thumbnail;
         var coffee = ctx.instance;
         var fileName = `coffee-${coffee.id.toString()}.jpg`;
+        console.log(Container);
+
         if (coffee.image && coffee.image.base64 && !coffee.image.url) {
             Thumbnail.generate(coffee.image, { size: 'original' }, null, (err, buffer) => {
                 if (err) {
