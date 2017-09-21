@@ -446,7 +446,7 @@ module.exports = (Coffee) => {
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
-        if (!coffee.trained && coffee.image) {
+        if (!coffee.trained && coffee.image && coffee.image.url) {
             coffee.train((err, _coffee) => {
                 next(err);
             });
