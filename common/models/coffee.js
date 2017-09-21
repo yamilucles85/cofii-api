@@ -20,7 +20,8 @@ const fs = require('fs');
 const temp = require("temp");
 
 const bufferToPath = (buffer, cb) => {
-    temp.open({ suffix: '.jpg' }, function (err, info) {
+    console.log('buffer');
+    temp.open({ suffix: '.jpg' }, (err, info) => {
         if (err) cb(err);
         fs.write(info.fd, buffer);
         fs.close(info.fd, function (err) {
@@ -30,9 +31,10 @@ const bufferToPath = (buffer, cb) => {
 }
 
 const imageToOCR = (buffer, cb) => {
-    bufferToPath(base64, (err, path) => {
+    console.log('buffer');
+    bufferToPath(buffer, (err, path) => {
         if (err) return cb(err);
-        tesseract.process(path, function (err, text) {
+        tesseract.process(path, (err, text) => {
             if (err) {
                 cb(err);
             } else {
@@ -470,7 +472,10 @@ module.exports = (Coffee) => {
                 }
             });
 
+            console.log('X');
+
             Thumbnail.generate(_self.image, { size: 'original' }, null, (err, buffer) => {
+                console.log('X');
                 if(err) return cb(err);
                 imageToOCR(buffer, (err, ocr) => {
                     if(err) return cb(err);
