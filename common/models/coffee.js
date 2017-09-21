@@ -476,7 +476,7 @@ module.exports = (Coffee) => {
                     .delete(response.hits.map(x => x.input.data.metadata.id))
                     .then(_response => {
                         _coffee.trained = false;
-                        _coffee.save(cb);
+                        _coffee.train(cb);
                     }, cb);
             }, cb);
         });
