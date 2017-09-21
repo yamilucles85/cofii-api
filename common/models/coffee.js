@@ -404,7 +404,7 @@ module.exports = (Coffee) => {
                     _self.save(cb);
                 },
                 (err) => {
-                    console.log(err);
+                    //console.log(err);
                     cb(new Error('Error while training'));
                 }
             );
@@ -472,6 +472,7 @@ module.exports = (Coffee) => {
                     }
                 }
             }).then((response) => {
+                console.log(response);
                 clarifai.inputs
                     .delete(response.hits.map(x => x.input.data.metadata.id))
                     .then(_response => {
