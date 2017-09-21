@@ -158,6 +158,7 @@ module.exports = (Coffee) => {
                     if(err){
                         console.log(err);
                     }
+
                     Coffee.find({
                         where: {
                             id: {
@@ -171,7 +172,7 @@ module.exports = (Coffee) => {
                         }
     
                         results = results.map(item => {
-                            let ml_score = tem.score = parseFloat(scores[item.id].score);
+                            let ml_score = item.score = parseFloat(scores[item.id].score);
                             if (ocr && item.ocr) {
                                 item.score = (ml_score + StringSimilarity.compareTwoStrings(item.ocr, ocr)) / 2;
                             }
