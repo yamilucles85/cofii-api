@@ -152,7 +152,7 @@ module.exports = (Coffee) => {
 
                 let scores = _.keyBy(hits, 'id');
 
-                let bitmap = new Buffer(image, 'base64');
+                let bitmap = new Buffer(image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
 
                 imageToOCR(bitmap, (err, ocr) => {
                     if(err){
