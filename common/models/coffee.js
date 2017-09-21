@@ -155,6 +155,9 @@ module.exports = (Coffee) => {
                 let bitmap = new Buffer(image, 'base64');
 
                 imageToOCR(bitmap, (err, ocr) => {
+                    if(err){
+                        console.log(err);
+                    }
                     Coffee.find({
                         where: {
                             id: {
