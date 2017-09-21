@@ -195,11 +195,10 @@ module.exports = (Coffee) => {
                         });
                     });
                 });
-            })
-            .catch((err) => {
-                winston.error("search coffee", err);
+            }, (err) => {
+                console.log(err);
                 return cb(err);
-            });
+            })
     };
 
     Coffee.remoteMethod("search", {
