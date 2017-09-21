@@ -44,6 +44,7 @@ module.exports = function(Thumbnail) {
     Thumbnail.generate = function (obj, options, res, cb) {
         let image = guessImageForJimp(obj);
         if(!image){
+            console.log('image not found');
             let error = new Error('Image not found');
             return cb(error);
         }

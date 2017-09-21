@@ -20,25 +20,21 @@ const fs = require('fs');
 const temp = require("temp");
 
 const bufferToPath = (buffer, cb) => {
-    console.log('buffer');
-    temp.open({ suffix: '.jpg' }, (err, info) => {
-        if (err) cb(err);
-        fs.write(info.fd, buffer);
-        fs.close(info.fd, function (err) {
-            cb(err, info.path);
-        });
+    var tempName = temp.path({suffix: '.jpg'});
+    fs.writeFile(tempName, buffer, (err) => {
+        console.error(err);
+        cb(err, tempName);
     });
 }
 
 const imageToOCR = (buffer, cb) => {
-    console.log('buffer');
     bufferToPath(buffer, (err, path) => {
         if (err) return cb(err);
         tesseract.process(path, (err, text) => {
             if (err) {
                 cb(err);
             } else {
-                cb(null, text);
+                cb(null, text.trim());
             }
         });
     });
@@ -449,6 +445,7 @@ module.exports = (Coffee) => {
     );
 
     Coffee.prototype.train = function (cb) {
+        const Thumbnail = app.models.Thumbnail;
         var _self = this;
         if (!_self.trained) {
             if (!_self.image) {
@@ -472,13 +469,10 @@ module.exports = (Coffee) => {
                 }
             });
 
-            console.log('X');
-
-            Thumbnail.generate(_self.image, { size: 'original' }, null, (err, buffer) => {
-                console.log('X');
+            Thumbnail.generate(_self.image, { size: 'original' }, null, function (err, buffer) {
                 if(err) return cb(err);
-                imageToOCR(buffer, (err, ocr) => {
-                    if(err) return cb(err);
+                imageToOCR(buffer, (_err, ocr) => {
+                    if(_err) return cb(_err);
                     clarifai.inputs.create(input).then(
                         (inputs) => {
                             _self.ocr = ocr;
@@ -486,7 +480,7 @@ module.exports = (Coffee) => {
                             _self.save(cb);
                         },
                         (err) => {
-                            //console.log(err);
+                            console.log(err);
                             cb(new Error('Error while training'));
                         }
                     );
@@ -529,6 +523,7 @@ module.exports = (Coffee) => {
 
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
+        if (ctx.options && ctx.options.skipAutoTrain) return next();
         if (!coffee.trained && coffee.image && coffee.image.url) {
             setTimeout(function () {
                 coffee.train((err, _coffee) => {
@@ -563,10 +558,10 @@ module.exports = (Coffee) => {
                         _coffee.trained = false;
                         _coffee.train((err, _c) => {
                             if (err) {
-                                _c.trained = false;
-                                _c.save(cb);
+                                _coffee.trained = false;
+                                _coffee.save({skipAutoTrain: true}, cb);
                             } else {
-                                cb(null, _c);
+                                cb(null, _coffee);
                             }
                         });
                     }, cb);

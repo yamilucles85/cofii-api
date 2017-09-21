@@ -43,6 +43,9 @@
     "trained": {
       "type": "boolean",
       "default": false
+    },
+    "ocr": {
+      "type": "string"
     }
   },
   "validations": [],
