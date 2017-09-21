@@ -457,23 +457,29 @@ module.exports = (Coffee) => {
     });
 
     Coffee.trainAgain = (id, cb) => {
-        Coffee.findById(id)
-            .then(_coffee => {
-                clarifai.inputs.search({
-                    input: {
-                        metadata: {
-                            id: _self.id.toString()
-                        }
+        Coffee.findById(id, (err, _coffee) => {
+            if(err){
+                return cb(err);   
+            }
+            if(!_coffee){
+                return cb(new Error('Coffee not found'));
+            }
+            
+            clarifai.inputs.search({
+                input: {
+                    metadata: {
+                        id: _self.id.toString()
                     }
-                }).then((response) => {
-                    clarifai.inputs
-                        .delete(response.hits.map(x => x.input.data.metadata.id))
-                        .then(_response => {
-                            _coffee.trained = false;
-                            _coffee.save(cb);
-                        }, cb);
-                }, cb);
-            }).catch(err => cb(err));
+                }
+            }).then((response) => {
+                clarifai.inputs
+                    .delete(response.hits.map(x => x.input.data.metadata.id))
+                    .then(_response => {
+                        _coffee.trained = false;
+                        _coffee.save(cb);
+                    }, cb);
+            }, cb);
+        });
     }
 
     Coffee.remoteMethod(
