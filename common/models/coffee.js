@@ -414,17 +414,6 @@ module.exports = (Coffee) => {
     };
 
     Coffee.observe('after save', function (ctx, next) {
-        var coffee = ctx.instance;
-        if (!coffee.trained && coffee.image) {
-            coffee.train((err, _coffee) => {
-                next(err);
-            });
-        } else {
-            next();
-        }
-    });
-
-    Coffee.observe('after save', function (ctx, next) {
         const Container = app.models.Container;
         const Thumbnail = app.models.Thumbnail;
         var coffee = ctx.instance;
@@ -453,6 +442,18 @@ module.exports = (Coffee) => {
             next();
         }
     });
+
+    Coffee.observe('after save', function (ctx, next) {
+        var coffee = ctx.instance;
+        if (!coffee.trained && coffee.image && coffee.image.url) {
+            coffee.train((err, _coffee) => {
+                next(err);
+            });
+        } else {
+            next();
+        }
+    });
+
 
     Coffee.trainAgain = (id, cb) => {
         Coffee.findById(id)
