@@ -477,6 +477,7 @@ module.exports = (Coffee) => {
                 clarifai.inputs
                     .delete(deleteIds)
                     .then(_response => {
+                        console.log(_response);
                         console.log('input deleted');
                         _coffee.trained = false;
                         _coffee.train(cb);
