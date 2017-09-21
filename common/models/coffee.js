@@ -446,14 +446,15 @@ module.exports = (Coffee) => {
     Coffee.observe('after save', function (ctx, next) {
         var coffee = ctx.instance;
         if (!coffee.trained && coffee.image && coffee.image.url) {
-            coffee.train((err, _coffee) => {
-                next(err);
-            });
-        } else {
-            next();
+            setTimeout(function () {
+                coffee.train((err, _coffee) => {
+                    next(err);
+                });
+            }, 5000);
         }
-    });
 
+        next();
+    });
 
     Coffee.trainAgain = (id, cb) => {
         Coffee.findById(id)
