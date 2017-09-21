@@ -472,13 +472,10 @@ module.exports = (Coffee) => {
                     }
                 }
             }).then((response) => {
-                let deleteIds = response.hits.map(x => x.input.data.metadata.id);
-                console.log(deleteIds);
+                let deleteIds = response.hits.map(x => x.input.id);
                 clarifai.inputs
                     .delete(deleteIds)
                     .then(_response => {
-                        console.log(_response);
-                        console.log('input deleted');
                         _coffee.trained = false;
                         _coffee.train(cb);
                     }, cb);
