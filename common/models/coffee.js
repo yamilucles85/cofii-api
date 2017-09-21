@@ -13,6 +13,34 @@ const THRESHOLD = 0.8;
 
 const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
+const tesseract = require('node-tesseract');
+
+const fs = require('fs');
+
+const temp = require("temp");
+
+const bufferToPath = (buffer, cb) => {
+    temp.open({ suffix: '.jpg' }, function (err, info) {
+        if (err) throw err;
+        fs.write(info.fd, buffer);
+        fs.close(info.fd, function (err) {
+            cb(err, info.path);
+        });
+    });
+}
+
+const imageToOCR = (buffer, cb) => {
+    bufferToPath(base64, (err, path) => {
+        if (err) return cb(err);
+        tesseract.process(path, function (err, text) {
+            if (err) {
+                cb(err);
+            } else {
+                cb(text);
+            }
+        });
+    });
+}
 
 // instantiate a new Clarifai app passing in your api key.
 const clarifai = new Clarifai.App({
@@ -97,7 +125,7 @@ module.exports = (Coffee) => {
 
         const query = { input: { base64: image } };
 
-        clarifai.inputs.search(query, { page: 1, perPage: 15 })
+        clarifai.inputs.search(query, { page: 1, perPage: 5 })
             .then((response) => {
                 let hits = response.hits;
 
@@ -110,16 +138,60 @@ module.exports = (Coffee) => {
                     return cb(null, null);
                 }
 
+                hits = _.filter(hits, (hit) => {
+                    let metadata = hit.input.data.metadata;
+                    return metadata && !!metadata.id && hit.score >= THRESHOLD;
+                }).map(hit => {
+                    return {
+                        id: hit.id,
+                        score: score
+                    }
+                });
+
                 hits = _.sortBy(hits, "score");
                 hits = hits.reverse();
+                hits = hits.slice(0, 10);
 
-                if (hits[0].score < THRESHOLD) {
-                    return cb();
-                }
+                let scores = _.keyBy(hits, 'id');
 
-                const metadata = hits[0].input.data.metadata;
+                let bitmap = new Buffer(image, 'base64');
 
-                Coffee.findById(metadata.id, (error, instance) => cb(null, instance));
+                imageToOCR(bitmap, (err, ocr) => {
+                    Coffee.find({
+                        where: {
+                            id: {
+                                inq: hits.map((h) => h.id)
+                            }
+                        },
+                        limit: 10
+                    }, (err, results) => {
+                        if (err) {
+                            return cb(err);
+                        }
+    
+                        results = results.map(item => {
+                            let ml_score = tem.score = parseFloat(scores[item.id].score);
+                            if (ocr && item.ocr) {
+                                item.score = (ml_score + StringSimilarity.compareTwoStrings(item.ocr, ocr)) / 2;
+                            }
+                            return item;
+                        });
+    
+                        results = _.sortBy(results, "score");
+                        results = results.reverse();
+    
+                        if (!results.length || results[0].score < THRESHOLD) {
+                            return cb({
+                                results: results
+                            });
+                        }
+
+                        cb({
+                            id: results[0].id,
+                            results: results
+                        });
+                    });
+                });
             })
             .catch((err) => {
                 winston.error("search coffee", err);
@@ -398,16 +470,24 @@ module.exports = (Coffee) => {
                 }
             });
 
-            clarifai.inputs.create(input).then(
-                (inputs) => {
-                    _self.trained = true;
-                    _self.save(cb);
-                },
-                (err) => {
-                    //console.log(err);
-                    cb(new Error('Error while training'));
-                }
-            );
+
+            Thumbnail.generate(_coffee.image, { size: 'original' }, null, (err, buffer) => {
+                if(err) return cb(err);
+                imageToOCR(buffer, (err, ocr) => {
+                    if(err) return cb(err);
+                    clarifai.inputs.create(input).then(
+                        (inputs) => {
+                            _self.ocr = ocr;
+                            _self.trained = true;
+                            _self.save(cb);
+                        },
+                        (err) => {
+                            //console.log(err);
+                            cb(new Error('Error while training'));
+                        }
+                    );
+                });
+            });
         } else {
             cb(new Error('Coffee Already Trained'))
         }
@@ -426,7 +506,7 @@ module.exports = (Coffee) => {
                 }
                 var upload = Container.uploadStream(BUCKET_NAME, fileName, {
                     acl: 'public-read'
-                }, () => {});
+                }, () => { });
                 var bufferStream = new stream.PassThrough();
                 upload.on('err', next);
                 upload.on('finish', () => {
@@ -458,10 +538,10 @@ module.exports = (Coffee) => {
 
     Coffee.trainAgain = (id, cb) => {
         Coffee.findById(id, (err, _coffee) => {
-            if(err){
-                return cb(err);   
+            if (err) {
+                return cb(err);
             }
-            if(!_coffee){
+            if (!_coffee) {
                 return cb(new Error('Coffee not found'));
             }
 
@@ -478,10 +558,10 @@ module.exports = (Coffee) => {
                     .then(_response => {
                         _coffee.trained = false;
                         _coffee.train((err, _c) => {
-                            if(err){
-                               _c.trained = false;
-                               _c.save(cb);
-                            }else{
+                            if (err) {
+                                _c.trained = false;
+                                _c.save(cb);
+                            } else {
                                 cb(null, _c);
                             }
                         });
