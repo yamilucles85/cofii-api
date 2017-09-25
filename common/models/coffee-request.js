@@ -9,13 +9,13 @@ const sha1 = require("node-sha1");
 const Bucket = process.env.BUCKET_NAME || "coffii-prod";
 
 module.exports = function handler(Coffeerequest) {
-    let awsConfig = app.get('awsConfig');
-    if(awsConfig){
-        AWS.config.update(awsConfig);
-    }
-
+    
     Coffeerequest.observe("before save", (ctx, next) => {
         const coffeeRequest = ctx.instance;
+        const awsConfig = app.get('awsConfig');
+        if(awsConfig){
+            AWS.config.update(awsConfig);
+        }
 
         const s3 = new AWS.S3();
 

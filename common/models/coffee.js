@@ -16,7 +16,13 @@ const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 const AWS = require('aws-sdk');
 
 const imageToOCR = (options, cb) => {
+    let awsConfig = app.get('awsConfig');
+    if(awsConfig){
+        AWS.config.update(awsConfig);
+    }
+    
     let lambda = new AWS.Lambda({region: 'us-west-2'});
+
     let params = {
       FunctionName: 'ocr-lambda', /* required */
       Payload: JSON.stringify(options)
@@ -40,11 +46,6 @@ const buildS3Url = (bucket, fileName) => {
 }
 
 module.exports = (Coffee) => {
-    let awsConfig = app.get('awsConfig');
-    if(awsConfig){
-        AWS.config.update(awsConfig);
-    }
-
     /**
      * Runs a query agains the photos of the Coffee bags and returns the top result
 
@@ -114,7 +115,6 @@ module.exports = (Coffee) => {
 
 
     Coffee.search = (image, cb) => {
-
         const query = { input: { base64: image } };
 
         clarifai.inputs.search(query, { page: 1, perPage: 5 })
@@ -442,6 +442,7 @@ module.exports = (Coffee) => {
 
     Coffee.prototype.train = function (cb) {
         const Thumbnail = app.models.Thumbnail;
+
         var _self = this;
         if (!_self.trained) {
             if (!_self.image) {
