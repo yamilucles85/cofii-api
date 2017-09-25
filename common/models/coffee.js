@@ -13,30 +13,19 @@ const THRESHOLD = 0.6;
 
 const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
-const tesseract = require('node-tesseract');
+const AWS = require('aws-sdk');
 
-const fs = require('fs');
+const imageToOCR = (options, cb) => {
+    let lambda = new AWS.Lambda({region: 'us-west-2'});
+    let params = {
+      FunctionName: 'ocr-lambda', /* required */
+      Payload: JSON.stringify(options)
+    };
 
-const temp = require("temp");
-
-const bufferToPath = (buffer, cb) => {
-    var tempName = temp.path({suffix: '.jpg'});
-    fs.writeFile(tempName, buffer, (err) => {
-        console.error(err);
-        cb(err, tempName);
-    });
-}
-
-const imageToOCR = (buffer, cb) => {
-    bufferToPath(buffer, (err, path) => {
-        if (err) return cb(err);
-        tesseract.process(path, (err, text) => {
-            if (err) {
-                cb(err);
-            } else {
-                cb(null, text.trim());
-            }
-        });
+    lambda.invoke(params, function(err, data) {
+      if (err) console.log(err, err.stack); // an error occurred
+      else  console.log(data);           // successful response
+      return cb(err, !err && data.Payload);
     });
 }
 
@@ -51,6 +40,11 @@ const buildS3Url = (bucket, fileName) => {
 }
 
 module.exports = (Coffee) => {
+    let awsConfig = app.get('awsConfig');
+    if(awsConfig){
+        AWS.config.update(awsConfig);
+    }
+
     /**
      * Runs a query agains the photos of the Coffee bags and returns the top result
 
@@ -152,9 +146,7 @@ module.exports = (Coffee) => {
 
                 let scores = _.keyBy(hits, 'id');
 
-                let bitmap = new Buffer(image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-
-                imageToOCR(bitmap, (err, ocr) => {
+                imageToOCR({base64: image}, (err, ocr) => {
                     if(err){
                         console.log(err);
                     }
@@ -473,22 +465,19 @@ module.exports = (Coffee) => {
                 }
             });
 
-            Thumbnail.generate(_self.image, { size: 'original' }, null, function (err, buffer) {
-                if(err) return cb(err);
-                imageToOCR(buffer, (_err, ocr) => {
-                    if(_err) return cb(_err);
-                    clarifai.inputs.create(input).then(
-                        (inputs) => {
-                            _self.ocr = ocr;
-                            _self.trained = true;
-                            _self.save(cb);
-                        },
-                        (err) => {
-                            console.log(err);
-                            cb(new Error('Error while training'));
-                        }
-                    );
-                });
+            imageToOCR(_self.image, (_err, ocr) => {
+                if(_err) return cb(_err);
+                clarifai.inputs.create(input).then(
+                    (inputs) => {
+                        _self.ocr = ocr;
+                        _self.trained = true;
+                        _self.save(cb);
+                    },
+                    (err) => {
+                        console.log(err);
+                        cb(new Error('Error while training'));
+                    }
+                );
             });
         } else {
             cb(new Error('Coffee Already Trained'))
