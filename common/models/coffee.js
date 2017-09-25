@@ -22,7 +22,6 @@ const imageToOCR = (options, cb) => {
     }
     
     let lambda = new AWS.Lambda({region: 'us-west-2'});
-
     let params = {
       FunctionName: 'ocr-lambda', /* required */
       Payload: JSON.stringify(options)

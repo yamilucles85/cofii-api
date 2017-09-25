@@ -6,8 +6,8 @@ const S3_KEY_ID = process.env.S3_KEY_ID || "AKIAJJRYTDV4VIPNLGUQ";
 
 module.exports = function(server) {
     server.set('awsConfig', {
-        accessKeyId: S3_KEY,
-        secretAccessKey: S3_KEY_ID,
+        accessKeyId: S3_KEY_ID,
+        secretAccessKey: S3_KEY,
         signatureVersion: "v4",
     });
 };
