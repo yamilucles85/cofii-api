@@ -1,5 +1,7 @@
 "use strict";
 
+const app = require("../../server/server");
+
 const AWS = require("aws-sdk");
 
 const sha1 = require("node-sha1");
