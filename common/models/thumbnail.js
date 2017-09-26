@@ -28,10 +28,6 @@ const guessImageForJimp = (obj) => {
 const resizeImage = (image, options) => {
     let thumbSize = thumbSizes.default;
 
-    if(options && options.quality){
-        image = image.quality(options.quality);
-    }
-
     if(options && options.maxSize){
         if(Math.max(image.bitmap.width, image.bitmap.heigth) > options.maxSize){
             if(image.bitmap.width >= image.bitmap.heigth){
@@ -40,6 +36,10 @@ const resizeImage = (image, options) => {
                 image = image.scaleToFit(Jimp.AUTO, options.maxSize);
             }
         }
+    }
+
+    if(options && options.quality){
+        image = image.quality(options.quality);
     }
 
     if(options && options.size === 'original'){
