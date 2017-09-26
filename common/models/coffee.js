@@ -491,7 +491,7 @@ module.exports = (Coffee) => {
         var fileName = `coffee-${coffee.id.toString()}.jpg`;
 
         if (coffee.image && coffee.image.base64 && !coffee.image.url) {
-            Thumbnail.generate(coffee.image, { size: 'original', quality: 90 }, null, (err, buffer) => {
+            Thumbnail.generate(coffee.image, { size: 'original', quality: 90, maxSize: 768 }, null, (err, buffer) => {
                 if (err) {
                     return next(err);
                 }
