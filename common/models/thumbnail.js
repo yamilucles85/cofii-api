@@ -35,9 +35,9 @@ const resizeImage = (image, options) => {
     if(options && options.maxSize){
         if(Math.max(image.bitmap.width, image.bitmap.heigth) > options.maxSize){
             if(image.bitmap.width >= image.bitmap.heigth){
-                image = image.resize(options.maxSize, Jimp.AUTO);
+                image = image.scaleToFit(options.maxSize, Jimp.AUTO);
             }else{
-                image = image.resize(Jimp.AUTO, options.maxSize);
+                image = image.scaleToFit(Jimp.AUTO, options.maxSize);
             }
         }
     }
