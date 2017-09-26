@@ -496,7 +496,8 @@ module.exports = (Coffee) => {
                     return next(err);
                 }
                 var upload = Container.uploadStream(BUCKET_NAME, fileName, {
-                    acl: 'public-read'
+                    acl: 'public-read',
+                    type: 'image/jpeg'
                 }, () => { });
                 var bufferStream = new stream.PassThrough();
                 upload.on('err', next);
