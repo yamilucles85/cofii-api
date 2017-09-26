@@ -28,6 +28,10 @@ const guessImageForJimp = (obj) => {
 const resizeImage = (image, options) => {
     let thumbSize = thumbSizes.default;
 
+    if(options && options.quality){
+        image = image.quality(options.quality);
+    }
+
     if(options && options.size === 'original'){
         return image;
     }
