@@ -54,8 +54,10 @@ module.exports = function(Thumbnail) {
             if(res){
                 res.set('Content-Type', Jimp.MIME_JPEG);
             }
-            
-            return image.getBuffer(Jimp.MIME_JPEG, (err, buffer) => cb(err, buffer, Jimp.MIME_JPEG));
+            return image.getBuffer(Jimp.MIME_JPEG, (err, buffer) => {
+                cb(err, buffer, Jimp.MIME_JPEG);
+                image = null;
+            });
         })
         .catch(err => {
             cb(err);

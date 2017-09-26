@@ -499,7 +499,7 @@ module.exports = (Coffee) => {
                     acl: 'public-read',
                     type: 'image/jpeg'
                 }, () => { });
-                var bufferStream = new stream.PassThrough();
+                let bufferStream = new stream.PassThrough();
                 upload.on('err', next);
                 upload.on('finish', () => {
                     coffee.image = { url: buildS3Url(BUCKET_NAME, fileName) };
