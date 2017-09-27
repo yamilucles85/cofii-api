@@ -17,8 +17,8 @@ const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
 const AWS = require('aws-sdk');
 
-const ML_W = 0.6;
-const OCR_W = 0.4;
+const ML_W = 0.7;
+const OCR_W = 0.3;
 
 const imageToOCR = (options, cb) => {
     let awsConfig = app.get('awsConfig');
