@@ -171,6 +171,14 @@ module.exports = (Coffee) => {
                                 item.ocr = item.ocr.replace(/[^a-z\d\s]+/gi, "").toLowerCase();
                                 ocr = ocr.replace(/[^a-z\d\s]+/gi, "").toLowerCase();;
                                 item.score = (ml_score + StringSimilarity.compareTwoStrings(item.ocr, ocr)) / 2;
+
+                                console.log({
+                                    text1: item.ocr,
+                                    text2: ocr,
+                                    similarity: StringSimilarity.compareTwoStrings(item.ocr, ocr),
+                                    score: item.score,
+                                    ml_score: ml_score
+                                });
                             }
                             return item;
                         });
