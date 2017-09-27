@@ -9,6 +9,8 @@ const stream = require('stream');
 const ObjectID = require('mongodb').ObjectID;
 const _ = require("lodash");
 
+const StringSimilarity = require('string-similarity');
+
 const THRESHOLD = 0.6;
 
 const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
@@ -30,7 +32,7 @@ const imageToOCR = (options, cb) => {
     lambda.invoke(params, function(err, data) {
       if (err) console.log(err, err.stack); // an error occurred
       else  console.log(data);           // successful response
-      return cb(err, !err && data.Payload);
+      return cb(err, !err && data.Payload.toString());
     });
 }
 
@@ -144,6 +146,8 @@ module.exports = (Coffee) => {
                 hits = hits.slice(0, 10);
 
                 let scores = _.keyBy(hits, 'id');
+
+                Thumbnail.generate
 
                 imageToOCR({base64: image}, (err, ocr) => {
                     if(err){

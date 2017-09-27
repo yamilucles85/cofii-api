@@ -39,6 +39,7 @@
     "passport-facebook-token": "^3.3.0",
     "passport-local": "^1.0.0",
     "serve-favicon": "^2.0.1",
+    "string-similarity": "^1.2.0",
     "strong-error-handler": "^2.0.0",
     "supertest": "^3.0.0",
     "temp": "^0.8.3",
