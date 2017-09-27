@@ -32,7 +32,7 @@ const imageToOCR = (options, cb) => {
     lambda.invoke(params, function(err, data) {
       if (err) console.log(err, err.stack); // an error occurred
       else  console.log(data);           // successful response
-      return cb(err, !err && data.Payload.toString());
+      return cb(err, !err && data.Payload && data.Payload.toString());
     });
 }
 
