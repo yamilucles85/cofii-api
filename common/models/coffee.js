@@ -17,6 +17,9 @@ const BUCKET_NAME = process.env.BUCKET_NAME || "coffii-prod";
 
 const AWS = require('aws-sdk');
 
+const ML_W = 0.6;
+const OCR_W = 0.4;
+
 const imageToOCR = (options, cb) => {
     let awsConfig = app.get('awsConfig');
     if(awsConfig){
@@ -170,7 +173,7 @@ module.exports = (Coffee) => {
                             if (ocr && item.ocr) {
                                 item.ocr = item.ocr.replace(/[^a-z\d\s]+/gi, "").toLowerCase();
                                 ocr = ocr.replace(/[^a-z\d\s]+/gi, "").toLowerCase();;
-                                item.score = (ml_score + StringSimilarity.compareTwoStrings(item.ocr, ocr)) / 2;
+                                item.score = ((ml_score * ML_W) + (StringSimilarity.compareTwoStrings(item.ocr, ocr) * OCR_W)/ (ML_W + OCR_W));
 
                                 console.log({
                                     text1: item.ocr,
