@@ -147,8 +147,6 @@ module.exports = (Coffee) => {
 
                 let scores = _.keyBy(hits, 'id');
 
-                Thumbnail.generate
-
                 imageToOCR({base64: image}, (err, ocr) => {
                     if(err){
                         console.log(err);
