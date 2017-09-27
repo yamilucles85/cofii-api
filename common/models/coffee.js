@@ -168,6 +168,8 @@ module.exports = (Coffee) => {
                         results = results.map(item => {
                             let ml_score = item.score = parseFloat(scores[item.id].score);
                             if (ocr && item.ocr) {
+                                item.ocr = item.ocr.replace(/[^a-z\d\s]+/gi, "");
+                                ocr = ocr.replace(/[^a-z\d\s]+/gi, "");
                                 item.score = (ml_score + StringSimilarity.compareTwoStrings(item.ocr, ocr)) / 2;
                             }
                             return item;
