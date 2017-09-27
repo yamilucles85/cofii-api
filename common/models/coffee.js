@@ -121,7 +121,7 @@ module.exports = (Coffee) => {
     Coffee.search = (image, cb) => {
         const query = { input: { base64: image } };
 
-        clarifai.inputs.search(query, { page: 1, perPage: 5 })
+        clarifai.inputs.search(query, { page: 1, perPage: 100 })
             .then((response) => {
                 let hits = response.hits;
 
